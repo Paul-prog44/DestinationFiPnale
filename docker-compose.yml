@@ -1,0 +1,59 @@
+services:
+  app:
+    image: node:24-alpine
+    container_name: Front-React
+    working_dir: /Front
+    ports:
+      - "5173:5173"
+    networks:
+      - fip_network
+    volumes:
+      - ./Front:/Front
+      - front_node_modules:/Front/node_modules
+    command: sh -c "npm install && npm run dev -- --host"
+    environment:
+      - NODE_ENV=development
+
+  db:
+    image: postgres:18-alpine 
+    container_name: Postgres-DB
+    ports:
+      - "5432:5432"
+    networks:
+      - fip_network
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: DestinationFIPnale
+    volumes:
+      - postgres_db_data:/var/lib/postgresql/data
+
+  backend:
+    image: eclipse-temurin:25-jdk-alpine
+    container_name: Back-Spring
+    working_dir: /Back
+    ports:
+      - "8080:8080"
+    networks:
+      - fip_network
+    depends_on:
+      - db
+    volumes:
+      - ./Back:/Back
+      - ./Back/.m2:/root/.m2
+    
+    command: sh -c "chmod +x mvnw && chmod +x /root/.m2/wrapper/dists/*/*/bin/mvn 2>/dev/null || true && ./mvnw spring-boot:run"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/DestinationFIPnale
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
+networks:
+  fip_network:
+    driver: bridge
+
+volumes:
+  postgres_db_data:
+  front_node_modules:
