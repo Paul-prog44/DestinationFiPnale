@@ -27,6 +27,7 @@ services:
       POSTGRES_DB: DestinationFIPnale
     volumes:
       - postgres_db_data:/var/lib/postgresql/data
+      - ./divers/SCRIPT_SQL.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     image: eclipse-temurin:25-jdk-alpine
