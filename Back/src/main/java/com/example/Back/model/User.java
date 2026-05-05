@@ -27,11 +27,11 @@ public class User {
     @Column(length = 100)
     private String password;
 
-    private LocalDate dateOfBirth; // Correspond à "date" en SQL
+    private LocalDate dateOfBirth;
 
-    private LocalDateTime createdAt; // Correspond à "timestamp"
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    @JoinColumn(name = "role_id") // La clé étrangère dans la DB
+    @JoinColumn(name = "role_id")
     private Role role;
 }
