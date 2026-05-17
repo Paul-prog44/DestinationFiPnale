@@ -41,3 +41,6 @@ build/
 *.sln
 *.sw?
 
+
+docker-compose.yml
+

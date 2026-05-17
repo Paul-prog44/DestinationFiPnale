@@ -26,10 +26,10 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: DestinationFIPnale
     volumes:
-      - postgres_db_data:/var/lib/postgresql
+      - postgres_db_data:/var/lib/postgresql/data
 
   backend:
-    image: eclipse-temurin:25-jdk-alpine
+    image: eclipse-temurin:21-jdk-alpine
     container_name: Back-Spring
     working_dir: /Back
     ports:
@@ -38,11 +38,12 @@ services:
       - fip_network
     depends_on:
       - db
+
     volumes:
       - ./Back:/Back
       - ./Back/.m2:/root/.m2
-    
-    command: sh -c "chmod +x mvnw && chmod +x /root/.m2/wrapper/dists/*/*/bin/mvn 2>/dev/null || true && ./mvnw spring-boot:run"
+
+    command: sh -c "./mvnw spring-boot:run -DskipTests"
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/DestinationFIPnale
