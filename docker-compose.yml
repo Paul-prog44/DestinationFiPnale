@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: DestinationFIPnale
     volumes:
-      - postgres_db_data:/var/lib/postgresql/data
+      - postgres_db_data:/var/lib/postgresql
 
   backend:
     image: eclipse-temurin:25-jdk-alpine
