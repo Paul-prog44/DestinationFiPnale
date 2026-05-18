@@ -1,17 +1,20 @@
 spring.application.name=Back
 
+# Base de données
 spring.datasource.url=jdbc:postgresql://db:5432/DestinationFIPnale
-
 spring.datasource.username=admin
 spring.datasource.password=password
-
 spring.datasource.driver-class-name=org.postgresql.Driver
 
+# JPA / Hibernate
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
-
-spring.jpa.hibernate.ddl-auto=create
 spring.jpa.hibernate.ddl-auto=update
-
-# Pour voir les requêtes SQL générées dans ta console VS Code (super pour le debug !)
 spring.jpa.show-sql=true
 spring.jpa.properties.hibernate.format_sql=true
+
+# JWT
+
+# peut etre généré avec la commande :
+[Convert]::ToBase64String((1..64 | ForEach-Object { [byte](Get-Random -Max 256) }))
+jwt.secret=secret
+jwt.expiration=86400000
