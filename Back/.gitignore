@@ -41,3 +41,6 @@ build/
 *.sln
 *.sw?
 
+Back/src/main/resources/application.properties
+docker-compose.yml
+
