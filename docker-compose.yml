@@ -50,6 +50,8 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: change-this-jwt-secret-to-a-32-byte-minimum-value
+      JWT_EXPIRATION: 86400000
 
 networks:
   fip_network:
