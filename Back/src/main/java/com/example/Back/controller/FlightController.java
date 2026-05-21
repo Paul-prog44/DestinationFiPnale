@@ -16,7 +16,7 @@ public class FlightController {
     private final FlightService flightService;
 
     @PostMapping("/create")
-    public ResponseEntity<FlightCreationResponse> create(@RequestBody FlightCreationRequest request) {
+    public ResponseEntity<FlightDto> create(@RequestBody FlightCreationRequest request) {
         return ResponseEntity.ok(flightService.create(request));
     }
 

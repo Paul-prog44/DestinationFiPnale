@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.Back.dto.FlightCreationRequest;
+import com.example.Back.dto.FlightDto;
 import com.example.Back.dto.FlightSearchRequest;
 import com.example.Back.dto.FlightSearchResponse;
 import com.example.Back.model.AirlineCompany;
@@ -33,20 +34,48 @@ public class FlightService {
             throw new EntityNotFoundException("Aucun résultat n'a été trouvé pour cette ville d'arrivée");
         }
 
-        return new FlightSearchResponse();
+        List<FlightDto> flightDtos = results.stream()
+        .map(flight -> 
+            FlightDto.builder()
+            .id(flight.getId())
+            .companyName(flight.getCompany().getName())
+            .deptTime(flight.getDeptTime()) 
+            .arrTime(flight.getArrTime())
+            .depCity(flight.getDepartureCity().getName())
+            .arrCity(flight.getArrivalCity().getName())
+            .price(flight.getPrice())
+            .build()
+        )
+        .toList();
+
+        return new FlightSearchResponse(flightDtos);
     }
 
     public FlightSearchResponse findByDepartureCityId(FlightSearchRequest request) {
         List<Flight> results = flightRepository.findByDepartureCityId(request.getDepartureCityId());
 
         if (results.isEmpty()) {
-            throw new EntityNotFoundException("Aucun résultat n'a été trouvé pour cette ville d'arrivée");
+            throw new EntityNotFoundException("Aucun vol n'a été trouvé pour cette ville de départ");
         }
 
-        return new FlightSearchResponse();
+        List<FlightDto> flightDtos = results.stream()
+        .map(flight -> 
+            FlightDto.builder()
+            .id(flight.getId())
+            .companyName(flight.getCompany().getName())
+            .deptTime(flight.getDeptTime()) 
+            .arrTime(flight.getArrTime())
+            .depCity(flight.getDepartureCity().getName())
+            .arrCity(flight.getArrivalCity().getName())
+            .price(flight.getPrice())
+            .build()
+        )
+        .toList();
+
+        return new FlightSearchResponse(flightDtos);
     }
 
-    public Flight create(FlightCreationRequest request) {
+    public FlightDto create(FlightCreationRequest request) {
 
         Flight flight = new Flight();
 
@@ -60,7 +89,16 @@ public class FlightService {
         flight.setDepartureCity(depCity);
         flight.setArrivalCity(arrCity);
 
-        return flight;
+        Flight savedFlight = flightRepository.save(flight);
+
+        return FlightDto.builder() 
+            .id(savedFlight.getId())
+            .companyName(airlineCompany.getName())
+            .deptTime(savedFlight.getDeptTime())
+            .arrTime(savedFlight.getArrTime())
+            .depCity(depCity.getName())
+            .arrCity(arrCity.getName())
+            .build();
     }
     
 }

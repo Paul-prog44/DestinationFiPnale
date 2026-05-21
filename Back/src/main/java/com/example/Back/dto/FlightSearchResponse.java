@@ -9,6 +9,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FlightSearchResponse {
-    // Une liste de DTOs simplifiés pour chaque vol trouvé
     private List<FlightDto> flights;
 }

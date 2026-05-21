@@ -11,7 +11,7 @@ import lombok.Data;
 public class FlightDto {
     private Integer id;
     private String companyName;
-    private LocalDateTime depTime;
+    private LocalDateTime deptTime;
     private LocalDateTime arrTime;
     private String depCity;
     private String arrCity;
