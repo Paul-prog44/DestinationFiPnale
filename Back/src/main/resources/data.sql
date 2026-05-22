@@ -10,10 +10,24 @@
 
 --INSERTION DES ROLES
 ALTER TABLE role DROP CONSTRAINT IF EXISTS uq_role_name;
-ALTER TABLE role ADD CONSTRAINT uq_role_name UNIQUE (name)
+ALTER TABLE role ADD CONSTRAINT uq_role_name UNIQUE (name);
 
 INSERT INTO role (name) VALUES ('ROLE_USER') ON CONFLICT (name) DO NOTHING;
 INSERT INTO role (name) VALUES ('ROLE_ADMIN') ON CONFLICT (name) DO NOTHING;
+
+
+--INSERTION DES UTILISATEURS
+--Mot de passe de chaque utilisateur : "password" (généré par https://bcrypt-generator.com/)
+ALTER TABLE users DROP CONSTRAINT IF EXISTS uq_users_email_role_id;
+ALTER TABLE users ADD CONSTRAINT uq_users_email_role_id UNIQUE (email, role_id);
+
+INSERT INTO users (firstname, lastname, email, password, date_of_birth, created_at, role_id) VALUES 
+('Jean', 'Dupont', 'user1@example.com', '$2a$12$QWBflxhqzFkNLpCxULZJOe3FlC/5KUP1m4/bRURLAEzcnw4xcK9JW', '1990-05-15', '2026-01-10 14:30:00', (SELECT id FROM role WHERE name = 'ROLE_USER')),
+('Marie', 'Curie', 'user2@example.com', '$2a$12$QWBflxhqzFkNLpCxULZJOe3FlC/5KUP1m4/bRURLAEzcnw4xcK9JW', '1985-11-07', '2026-02-14 09:15:00', (SELECT id FROM role WHERE name = 'ROLE_USER')),
+('Lucas', 'Martin', 'user3@example.com', '$2a$12$QWBflxhqzFkNLpCxULZJOe3FlC/5KUP1m4/bRURLAEzcnw4xcK9JW', '1998-03-22', '2026-03-01 18:20:00', (SELECT id FROM role WHERE name = 'ROLE_USER')),
+('Sophie', 'Bernard', 'user4@example.com', '$2a$12$QWBflxhqzFkNLpCxULZJOe3FlC/5KUP1m4/bRURLAEzcnw4xcK9JW', '1992-08-30', '2026-04-12 11:05:00', (SELECT id FROM role WHERE name = 'ROLE_USER')),
+('Thomas', 'Dubois', 'user5@example.com', '$2a$12$QWBflxhqzFkNLpCxULZJOe3FlC/5KUP1m4/bRURLAEzcnw4xcK9JW', '2001-01-25', '2026-05-01 16:40:00', (SELECT id FROM role WHERE name = 'ROLE_USER'))
+ON CONFLICT ON CONSTRAINT uq_users_email_role_id DO NOTHING;
 
 
 --INSERT DES COMPAGNIES AERIENNES
@@ -146,31 +160,31 @@ ALTER TABLE booking DROP CONSTRAINT IF EXISTS uq_booking;
 ALTER TABLE booking ADD CONSTRAINT uq_booking UNIQUE (user_id, created_at, status);
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user1@example.com'), 1, NULL, NULL, '2026-05-22 10:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user1@example.com'), 1, NULL, NULL, '2026-05-22 10:00:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user2@example.com'), 2, NULL, NULL, '2026-05-22 10:15:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user2@example.com'), 2, NULL, NULL, '2026-05-22 10:15:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user3@example.com'), 3, NULL, NULL, '2026-05-22 11:00:00', 'PENDING')  ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user3@example.com'), 3, NULL, NULL, '2026-05-22 11:00:00', 'PENDING')  ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user1@example.com'), 4, NULL, NULL, '2026-05-22 11:30:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user1@example.com'), 4, NULL, NULL, '2026-05-22 11:30:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user4@example.com'), 5, NULL, NULL, '2026-05-22 12:00:00', 'CANCELLED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user4@example.com'), 5, NULL, NULL, '2026-05-22 12:00:00', 'CANCELLED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user2@example.com'), 6, NULL, NULL, '2026-05-22 13:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user2@example.com'), 6, NULL, NULL, '2026-05-22 13:00:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user5@example.com'), 7, NULL, NULL, '2026-05-22 14:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user5@example.com'), 7, NULL, NULL, '2026-05-22 14:00:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user3@example.com'), 8, NULL, NULL, '2026-05-22 14:45:00', 'PENDING') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user3@example.com'), 8, NULL, NULL, '2026-05-22 14:45:00', 'PENDING') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user1@example.com'), 9, NULL, NULL, '2026-05-22 15:30:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user1@example.com'), 9, NULL, NULL, '2026-05-22 15:30:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
-((SELECT id FROM app_user WHERE email = 'user4@example.com'), 10, NULL, NULL, '2026-05-22 16:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+((SELECT id FROM users WHERE email = 'user4@example.com'), 10, NULL, NULL, '2026-05-22 16:00:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
