@@ -3,9 +3,20 @@
 -- TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
 -- TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
 -- TRUNCATE TABLE flight_booking RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE booking RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE users RESTART IDENTITY CASCADE;
 
 
 
+--INSERTION DES ROLES
+ALTER TABLE role DROP CONSTRAINT IF EXISTS uq_role_name;
+ALTER TABLE role ADD CONSTRAINT uq_role_name UNIQUE (name)
+
+INSERT INTO role (name) VALUES ('ROLE_USER') ON CONFLICT (name) DO NOTHING;
+INSERT INTO role (name) VALUES ('ROLE_ADMIN') ON CONFLICT (name) DO NOTHING;
+
+
+--INSERT DES COMPAGNIES AERIENNES
 ALTER TABLE airline_company DROP CONSTRAINT IF EXISTS uq_airline_company_name;
 ALTER TABLE airline_company ADD CONSTRAINT uq_airline_company_name UNIQUE (name);
 
@@ -16,6 +27,7 @@ INSERT INTO airline_company (name) VALUES ('Transavia') ON CONFLICT (name)  DO N
 INSERT INTO airline_company (name) VALUES ('SwissAir') ON CONFLICT (name)  DO NOTHING;
 
 
+--INSERTION DES VILLES
 ALTER TABLE city DROP CONSTRAINT IF EXISTS uq_city_name;
 ALTER TABLE city ADD CONSTRAINT uq_city_name UNIQUE (name);
 
@@ -44,9 +56,10 @@ INSERT INTO city (name, country) VALUES ('Buenos Aires', 'Argentine') ON CONFLIC
 INSERT INTO city (name, country) VALUES ('Bangkok', 'Thaïlande') ON CONFLICT (name) DO NOTHING;
 INSERT INTO city (name, country) VALUES ('Singapour', 'Singapour') ON CONFLICT (name) DO NOTHING;
 
+
+--INSERTION DES VOLS
 ALTER TABLE flight DROP CONSTRAINT IF EXISTS uq_flight_unique_route;
 ALTER TABLE flight ADD CONSTRAINT uq_flight_unique_route UNIQUE (company_id, dep_city_id, arr_city_id, dept_time);
-
 
 INSERT INTO flight (company_id, dep_city_id, arr_city_id, dept_time, arr_time, price) VALUES 
 ((SELECT id FROM airline_company WHERE name = 'Air France'), (SELECT id FROM city WHERE name = 'paris'), (SELECT id FROM city WHERE name = 'New York'), '2026-06-01 08:00:00', '2026-06-01 16:30:00', 550.00),
@@ -84,7 +97,7 @@ INSERT INTO flight (company_id, dep_city_id, arr_city_id, dept_time, arr_time, p
 ON CONFLICT ON CONSTRAINT uq_flight_unique_route DO NOTHING;
 
 
-
+--INSERTION DES RESERVATIONS D'AVION
 ALTER TABLE flight_booking DROP CONSTRAINT IF EXISTS uq_flight_booking;
 ALTER TABLE flight_booking ADD CONSTRAINT uq_flight_booking UNIQUE (ob_flight_id, ib_flight_id, status);
 
@@ -126,3 +139,38 @@ INSERT INTO flight_booking (nb_passagers, ob_flight_id, ib_flight_id, status) VA
 
 INSERT INTO flight_booking (nb_passagers, ob_flight_id, ib_flight_id, status) VALUES (2, (SELECT id FROM flight WHERE company_id = (SELECT id FROM airline_company WHERE name = 'SwissAir') AND dept_time = '2026-06-03 22:00:00'), 
  NULL, 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_flight_booking DO NOTHING;
+
+
+--INSERTION DES RESERVATIONS
+ALTER TABLE booking DROP CONSTRAINT IF EXISTS uq_booking;
+ALTER TABLE booking ADD CONSTRAINT uq_booking UNIQUE (user_id, created_at, status);
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user1@example.com'), 1, NULL, NULL, '2026-05-22 10:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user2@example.com'), 2, NULL, NULL, '2026-05-22 10:15:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user3@example.com'), 3, NULL, NULL, '2026-05-22 11:00:00', 'PENDING')  ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user1@example.com'), 4, NULL, NULL, '2026-05-22 11:30:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user4@example.com'), 5, NULL, NULL, '2026-05-22 12:00:00', 'CANCELLED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user2@example.com'), 6, NULL, NULL, '2026-05-22 13:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user5@example.com'), 7, NULL, NULL, '2026-05-22 14:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user3@example.com'), 8, NULL, NULL, '2026-05-22 14:45:00', 'PENDING') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user1@example.com'), 9, NULL, NULL, '2026-05-22 15:30:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
+
+INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
+((SELECT id FROM app_user WHERE email = 'user4@example.com'), 10, NULL, NULL, '2026-05-22 16:00:00', 'CONFIRMED') ON CONSTRAINT uq_booking DO NOTHING;
