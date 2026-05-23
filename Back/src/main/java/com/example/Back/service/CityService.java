@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.Back.dto.CityCreationRequest;
 import com.example.Back.dto.CityDto;
 import com.example.Back.dto.CitySearchResponse;
 import com.example.Back.model.City;
@@ -32,6 +33,23 @@ public class CityService {
         .toList();
 
         return new CitySearchResponse(cityDtos);
+    }
+
+    public CityDto create(CityCreationRequest request) {
+        
+        System.out.println("Request reçue : " + request.toString());
+        City city = new City();
+
+        city.setName(request.getName());
+        city.setCountry(request.getCountry());
+
+        City savedCity = cityRepository.save(city);
+
+        return CityDto.builder()
+            .id(savedCity.getId())
+            .name(savedCity.getName())
+            .country(savedCity.getCountry())
+            .build();
     }
 
     
