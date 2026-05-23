@@ -10,6 +10,7 @@ import com.example.Back.dto.CitySearchResponse;
 import com.example.Back.model.City;
 import com.example.Back.repository.CityRepository;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -37,13 +38,35 @@ public class CityService {
 
     public CityDto create(CityCreationRequest request) {
         
-        System.out.println("Request reçue : " + request.toString());
         City city = new City();
 
         city.setName(request.getName());
         city.setCountry(request.getCountry());
 
         City savedCity = cityRepository.save(city);
+
+        return CityDto.builder()
+            .id(savedCity.getId())
+            .name(savedCity.getName())
+            .country(savedCity.getCountry())
+            .build();
+    }
+
+    public void delete(Integer id) {
+
+        if (!cityRepository.existsById(id)) {
+            throw new EntityNotFoundException("Suppression impossible, l'identifiant " +id+ " ne correspond à aucune ville." );
+        }
+        cityRepository.deleteById(id);
+    } 
+
+    public CityDto get(Integer id) {
+        
+        if (!cityRepository.existsById(id)) {
+            throw new EntityNotFoundException("Suppression impossible, l'identifiant " +id+ " ne correspond à aucune ville." );
+        }
+        City savedCity = cityRepository.findById(id)
+            .orElseThrow(() -> new EntityNotFoundException("Aucune ville ne correspond à l'identifiant " +id+  "."));
 
         return CityDto.builder()
             .id(savedCity.getId())

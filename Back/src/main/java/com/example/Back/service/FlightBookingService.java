@@ -17,11 +17,10 @@ public class FlightBookingService {
     
     private final FlightBookingRepository flightBookingRepository;
 
-    public FlightBookingSearchResponse findById(FlightBookingSearchRequest request) {
-        Integer flightBookingId = request.getFlightBookingId();
+    public FlightBookingSearchResponse findById(Integer id) {
 
-        FlightBooking result = flightBookingRepository.findById(flightBookingId)
-        .orElseThrow(() -> new EntityNotFoundException("Il n'existe pas de réservation pour l'identifiant "+flightBookingId+ "."));
+        FlightBooking result = flightBookingRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Il n'existe pas de réservation pour l'identifiant "+id+ "."));
 
         FlightBookingDto flightBooking = FlightBookingDto.builder()
         .id(result.getId())

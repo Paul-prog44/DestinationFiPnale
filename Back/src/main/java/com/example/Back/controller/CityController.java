@@ -23,9 +23,20 @@ public class CityController {
         return ResponseEntity.ok(cityService.getAll());
     }
 
-    @PostMapping("/create")
+    @GetMapping("/{id}")
+    public ResponseEntity<CityDto> get(@PathVariable Integer id) {
+        return ResponseEntity.ok(cityService.get(id));
+    }
+
+    @PostMapping
     public ResponseEntity<CityDto> create(@RequestBody CityCreationRequest request) {
         return ResponseEntity.ok(cityService.create(request));
     }
-    
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        cityService.delete(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }

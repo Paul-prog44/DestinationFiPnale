@@ -15,14 +15,14 @@ public class FlightController {
     
     private final FlightService flightService;
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<FlightDto> create(@RequestBody FlightCreationRequest request) {
         return ResponseEntity.ok(flightService.create(request));
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<FlightSearchResponse> search(@RequestBody FlightSearchRequest request) {
-        return ResponseEntity.ok(flightService.findByArrivalCityId(request));
+    @GetMapping("/arrivalCity/{cityId}")
+    public ResponseEntity<FlightSearchResponse> search(@PathVariable Integer cityId) {
+        return ResponseEntity.ok(flightService.findByArrivalCityId(cityId));
     }
 
 }

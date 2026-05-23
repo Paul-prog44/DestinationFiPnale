@@ -27,8 +27,8 @@ public class FlightService {
     private final AirlineCompanyRepository airlineCompanyRepository;
     private final CityRepository cityRepository;
 
-    public FlightSearchResponse findByArrivalCityId(FlightSearchRequest request) {
-        List<Flight> results = flightRepository.findByArrivalCityId(request.getArrivalCityId());
+    public FlightSearchResponse findByArrivalCityId(Integer cityId) {
+        List<Flight> results = flightRepository.findByArrivalCityId(cityId);
 
         if (results.isEmpty()) {
             throw new EntityNotFoundException("Aucun résultat n'a été trouvé pour cette ville d'arrivée");

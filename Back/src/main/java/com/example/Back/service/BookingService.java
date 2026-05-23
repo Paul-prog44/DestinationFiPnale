@@ -32,8 +32,7 @@ public class BookingService {
     //TODO private final RoomBookingRepository roomBookingRepitory:
     //TODO private final CarBookingRepository carBookingRepository;
 
-    public BookingSearchByUserIdResponse findByUserId(BookingSearchByUserIdRequest request) {
-        Integer userId = request.getUserId();
+    public BookingSearchByUserIdResponse findByUserId(Integer userId) {
 
         List<Booking> results = bookingRepository.findByUserId(userId);
 
@@ -110,4 +109,21 @@ public class BookingService {
         .status(savedBooking.getStatus())
         .build();
     }
+
+    public BookingDto get(Integer bookingId) {
+
+        Booking savedBooking  = bookingRepository.findById(bookingId)
+            .orElseThrow(() -> new EntityNotFoundException("Cette réservation n'existe pas"));
+    
+        return BookingDto.builder()
+            .id(savedBooking.getId())
+            .userId(savedBooking.getUser().getId())
+            .flightBookingId(savedBooking.getFlightBooking() != null? savedBooking.getFlightBooking().getId(): null)
+            .roomBookingId(savedBooking.getRoomBooking() != null? savedBooking.getRoomBooking().getId(): null)
+            .carBookingId(savedBooking.getCarBooking() != null? savedBooking.getCarBooking().getId():null)
+            .createdAt(savedBooking.getCreatedAt())
+            .status(savedBooking.getStatus())
+            .build();
+    }
+
 } 
