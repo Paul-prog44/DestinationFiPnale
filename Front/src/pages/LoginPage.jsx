@@ -28,7 +28,7 @@ export default function LoginPage() {
             <div className="card card-auth p-4" style={{ width: "100%", maxWidth: "420px" }}>
 
                 <div className="text-center mb-4">
-                    <div className="mb-2" style={{ fontSize: "2rem" }}>✈️</div>
+                    <div className="mb-2" style={{ fontSize: "2rem" }}></div>
                     <h2 className="fw-bold" style={{ color: "#8EA604" }}>Bon retour !</h2>
                     <p className="text-muted small">Connectez-vous à votre compte</p>
                 </div>
