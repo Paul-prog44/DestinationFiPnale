@@ -22,6 +22,7 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
 
+    // crée un toekn signé avec le mail et une date d'expiration
     public String generateToken(String email) {
         return Jwts.builder()
                 .subject(email)
@@ -31,6 +32,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    // extraire le mail à partir du token
     public String getEmailFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(getSigningKey())
@@ -40,6 +42,7 @@ public class JwtTokenProvider {
                 .getSubject();
     }
 
+    // vérifie que le token n'est pas expiré 
     public boolean validateToken(String token) {
         try {
             Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token);
