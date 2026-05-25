@@ -29,10 +29,14 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsServiceImpl userDetailsService;
 
+    // crée un bean pour hacher les mot de passe ( Bcrypt bib fourni par spring security)
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    // vérifie les credentials dans la base de donnes
 
     @Bean
     public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
@@ -42,6 +46,7 @@ public class SecurityConfig {
         return new ProviderManager(provider);
     }
 
+    // définie les règles de sécurité sur toutes les routes
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
@@ -57,6 +62,7 @@ public class SecurityConfig {
                 .build();
     }
 
+    // autorise le localhost a appeler le back
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
