@@ -24,7 +24,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.login(request));
     }
 
-    // Endpoint protégé — teste que le token fonctionne
+    // Endpoint protégé — teste que le token fonctionne et retourne l'email de l'utilisateur connecté
     @GetMapping("/me")
     public ResponseEntity<String> me(Authentication authentication) {
         return ResponseEntity.ok("Connecté : " + authentication.getName());

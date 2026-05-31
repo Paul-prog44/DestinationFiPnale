@@ -1,16 +1,20 @@
 package com.example.Back;
 
 import org.springframework.boot.SpringApplication;
+
+import com.example.Back.model.AirlineCompany;
 import com.example.Back.model.Role;
 import com.example.Back.repository.RoleRepository;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import com.example.Back.model.AirlineCompany;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+
 
 @SpringBootApplication
 @RestController 
@@ -24,6 +28,19 @@ public class BackApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BackApplication.class, args);
+    }
+
+    //Route de test d'insertion en bdd
+    @GetMapping("/companies")
+    public List<AirlineCompany> getAllCompanies() {
+        String sql = "SELECT id, name FROM airline_company";
+        
+        // Le JdbcTemplate fait le SELECT et transforme chaque ligne de la table en objet AirlineCompany
+        return jdbcTemplate.query(sql, (rs, rowNum) -> AirlineCompany.builder()
+                .id(rs.getInt("id"))
+                .name(rs.getString("name"))
+                .build()
+        );
     }
 
     @GetMapping("/test-db")
