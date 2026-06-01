@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { login } from "../api/authApi";
 import { useAuth } from "../hooks/useAuth";
 
@@ -9,6 +9,7 @@ export default function LoginPage() {
     const [error, setError] = useState("");
     const { setAuth } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +17,7 @@ export default function LoginPage() {
         try {
             const data = await login({ email, password });
             setAuth(data.token, { email: data.email, firstname: data.firstname });
-            navigate("/dashboard");
+            navigate(location.state?.from || "/dashboard", { replace: true });
         } catch {
             setError("Email ou mot de passe incorrect");
         }
@@ -25,10 +26,9 @@ export default function LoginPage() {
     return (
         <div className="min-vh-100 d-flex align-items-center justify-content-center"
              style={{ background: "linear-gradient(135deg, #F5D0C5 0%, #91C7B1 100%)" }}>
-            <div className="card card-auth p-4" style={{ width: "100%", maxWidth: "420px" }}>
+            <div className="card border-0 shadow-sm p-4" style={{ width: "100%", maxWidth: "420px" }}>
 
                 <div className="text-center mb-4">
-                    <div className="mb-2" style={{ fontSize: "2rem" }}></div>
                     <h2 className="fw-bold" style={{ color: "#8EA604" }}>Bon retour !</h2>
                     <p className="text-muted small">Connectez-vous à votre compte</p>
                 </div>
@@ -42,7 +42,7 @@ export default function LoginPage() {
                         <label className="form-label small fw-semibold text-muted">Email</label>
                         <input
                             type="email"
-                            className="form-control input-custom"
+                            className="form-control"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="votre@email.com"
@@ -53,21 +53,21 @@ export default function LoginPage() {
                         <label className="form-label small fw-semibold text-muted">Mot de passe</label>
                         <input
                             type="password"
-                            className="form-control input-custom"
+                            className="form-control"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="••••••••"
                             required
                         />
                     </div>
-                    <button type="submit" className="btn btn-primary-custom w-100 py-2 fw-semibold">
+                    <button type="submit" className="btn w-100 py-2 fw-semibold text-white" style={{ backgroundColor: "#8EA604" }}>
                         Se connecter
                     </button>
                 </form>
 
                 <p className="text-center mt-3 small text-muted">
                     Pas encore de compte ?{" "}
-                    <Link to="/register" className="link-custom fw-semibold">S'inscrire</Link>
+                    <Link to="/register" state={{ from: location.state?.from }} className="fw-semibold text-decoration-none" style={{ color: "#8EA604" }}>S'inscrire</Link>
                 </p>
             </div>
         </div>
