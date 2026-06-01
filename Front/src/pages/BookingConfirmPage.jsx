@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { bookRoom, getHotel } from "../api/hotelApi";
-import TravelNavbar from "../components/TravelNavbar";
+import Navbar from "../components/Navbar";
 
 export default function BookingConfirmPage() {
     const { hotelId, roomId } = useParams();
@@ -76,7 +76,7 @@ export default function BookingConfirmPage() {
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
-            <TravelNavbar currentSection="hotel" />
+            <Navbar currentSection="hotel" />
 
             <div className="container py-4 py-lg-5">
                 {loading && <div className="alert alert-secondary">Chargement de la reservation...</div>}

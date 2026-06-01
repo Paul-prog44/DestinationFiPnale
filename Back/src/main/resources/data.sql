@@ -188,3 +188,31 @@ INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id
 
 INSERT INTO booking (user_id, flight_booking_id, room_booking_id, car_booking_id, created_at, status) VALUES 
 ((SELECT id FROM users WHERE email = 'user4@example.com'), 10, NULL, NULL, '2026-05-22 16:00:00', 'CONFIRMED') ON CONFLICT ON CONSTRAINT uq_booking DO NOTHING;
+
+
+--INSERTION DES HOTELS
+ALTER TABLE hotel DROP CONSTRAINT IF EXISTS uq_hotel_city_adress;
+ALTER TABLE hotel ADD CONSTRAINT uq_hotel_city_adress UNIQUE (city_id, adress);
+
+INSERT INTO hotel (city_id, adress, stars, img_path, add_info) VALUES
+((SELECT id FROM city WHERE name = 'paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.jpg', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["wifi","petit-dejeuner","reception 24h"]}'),
+((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.jpg', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["wifi","petit-dejeuner"]}'),
+((SELECT id FROM city WHERE name = 'rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["wifi","climatisation"]}'),
+((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.jpg', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["wifi","terrasse","petit-dejeuner"]}')
+ON CONFLICT ON CONSTRAINT uq_hotel_city_adress DO NOTHING;
+
+
+--INSERTION DES CHAMBRES
+ALTER TABLE room DROP CONSTRAINT IF EXISTS uq_room_hotel_number;
+ALTER TABLE room ADD CONSTRAINT uq_room_hotel_number UNIQUE (hotel_id, number);
+
+INSERT INTO room (number, price_per_night, capacity, hotel_id, statham) VALUES
+(101, 119.00, 2, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Chambre Confort","summary":"Chambre simple et lumineuse pour deux voyageurs","imgPath":"/images/rooms/371981608.jpg"}'),
+(102, 169.00, 3, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Suite Deluxe","summary":"Grande chambre avec coin salon pour petit groupe","imgPath":"/images/rooms/763476568.jpg"}'),
+(201, 109.00, 2, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Classique","summary":"Chambre calme ideale pour un week-end a Prague","imgPath":"/images/rooms/763942222.jpg"}'),
+(202, 149.00, 3, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Balcon","summary":"Chambre avec plus d espace et balcon","imgPath":"/images/rooms/847574085.jpg"}'),
+(301, 129.00, 2, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Chambre Patio","summary":"Chambre confortable proche des quartiers vivants","imgPath":"/images/rooms/371981608.jpg"}'),
+(302, 179.00, 4, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Suite Terrasse","summary":"Suite familiale pour un sejour a Rome","imgPath":"/images/rooms/847574085.jpg"}'),
+(401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.jpg"}'),
+(402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.jpg"}')
+ON CONFLICT ON CONSTRAINT uq_room_hotel_number DO NOTHING;

@@ -7,7 +7,7 @@ const sections = [
     { key: "voiture", label: "Voiture" },
 ];
 
-export default function TravelNavbar({ currentSection = "hotel" }) {
+export default function Navbar({ currentSection = "hotel" }) {
     const { isAuthenticated, user } = useAuth();
     const accountLabel = user?.email || user?.firstname || "Mon espace";
 

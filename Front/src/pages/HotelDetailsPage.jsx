@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getHotel } from "../api/hotelApi";
-import TravelNavbar from "../components/TravelNavbar";
+import Navbar from "../components/Navbar";
 
 export default function HotelDetailsPage() {
     const { hotelId } = useParams();
@@ -26,7 +26,7 @@ export default function HotelDetailsPage() {
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
-            <TravelNavbar currentSection="hotel" />
+            <Navbar currentSection="hotel" />
 
             <div className="container py-4 py-lg-5">
                 {loading && <div className="alert alert-secondary">Chargement de l'hotel...</div>}
