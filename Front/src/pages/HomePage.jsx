@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getHotels } from "../api/hotelApi";
-import TravelNavbar from "../components/TravelNavbar";
+import Navbar from "../components/Navbar";
 
 export default function HomePage() {
     const [hotels, setHotels] = useState([]);
@@ -42,7 +42,7 @@ export default function HomePage() {
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
-            <TravelNavbar currentSection="hotel" />
+            <Navbar currentSection="hotel" />
 
             <section className="py-4 py-lg-5">
                 <div className="container">
@@ -58,7 +58,7 @@ export default function HomePage() {
                         <div className="position-absolute top-0 start-0 end-0 h-100 d-flex flex-column justify-content-between p-4 p-lg-5">
                             <div className="col-lg-7 text-white">
                                 <span className="badge rounded-pill bg-white text-dark px-3 py-2 mb-3">Accueil hotel</span>
-                                <h1 className="display-5 fw-semibold mb-3">Un hotel pour une nuit ou pour toutes la vie</h1>
+                                <h1 className="display-5 fw-semibold mb-3">Un hotel pour une nuit ou pour toute la vie</h1>
                                 <p className="fs-5 mb-0 text-white text-opacity-75">
                                     Recherche d'hotel simple.
                                 </p>
@@ -142,7 +142,6 @@ export default function HomePage() {
                 <div className="container">
                     <div className="text-center mb-4">
                         <h2 className="fw-semibold mb-2" style={{ color: "#91C7B1" }}>Offres speciales</h2>
-                        <p className="text-secondary mb-0">Une presentation plus proche des visuels, en restant sur les donnees du seed.</p>
                     </div>
 
                     <div className="row justify-content-center g-4">
@@ -170,30 +169,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <section className="pb-5">
-                <div className="container">
-                    <div className="row g-4">
-                        <div className="col-lg-6">
-                            <div className="card border-0 shadow-sm rounded-5 h-100" style={{ backgroundColor: "#FFFFFF" }}>
-                                <div className="card-body p-4 p-lg-5">
-                                    <span className="badge rounded-pill px-3 py-2 mb-3" style={{ backgroundColor: "#91C7B1", color: "#fff" }}>Hotel actif</span>
-                                    <h3 className="h4 fw-semibold">Bloc hotel deja branche</h3>
-                                    <p className="text-secondary mb-0">Recherche, selection, chambre et confirmation restent disponibles avec un rendu plus proche des maquettes.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="card border-0 shadow-sm rounded-5 h-100" style={{ backgroundColor: "#FFFFFF" }}>
-                                <div className="card-body p-4 p-lg-5">
-                                    <span className="badge rounded-pill px-3 py-2 mb-3 text-dark" style={{ backgroundColor: "#F5D0C5" }}>Place reservee</span>
-                                    <h3 className="h4 fw-semibold">Vol et voiture gardent leur place</h3>
-                                    <p className="text-secondary mb-0">Les collegues peuvent reprendre la meme structure d'accueil sans que le module hotel empiète sur leur zone.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        
         </div>
     );
 }

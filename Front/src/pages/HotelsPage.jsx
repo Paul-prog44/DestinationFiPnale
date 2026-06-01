@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getHotel, getHotels } from "../api/hotelApi";
-import TravelNavbar from "../components/TravelNavbar";
+import Navbar from "../components/Navbar";
 
 export default function HotelsPage() {
     const [hotels, setHotels] = useState([]);
@@ -88,7 +88,7 @@ export default function HotelsPage() {
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
-            <TravelNavbar currentSection="hotel" />
+            <Navbar currentSection="hotel" />
 
             <div className="container py-4 py-lg-5">
                 <div className="card border-0 shadow-sm rounded-5 mb-5" style={{ backgroundColor: "#DEDEDE" }}>
