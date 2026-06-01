@@ -8,6 +8,7 @@ import BookingConfirmPage from "./pages/BookingConfirmPage";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import FlightSearch from "./pages/FlightSearch";
 
 export default function App() {
     return (
@@ -19,6 +20,7 @@ export default function App() {
                     <Route path="/hotels/:hotelId" element={<HotelDetailsPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/flights" element= {<FlightSearch />} />
                     <Route
                         path="/hotels/:hotelId/rooms/:roomId/confirm"
                         element={<ProtectedRoute><BookingConfirmPage /></ProtectedRoute>}
