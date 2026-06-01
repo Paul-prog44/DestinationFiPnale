@@ -30,7 +30,7 @@ public class HotelService {
 
     public HotelSearchResponse getAll() {
         List<Hotel> results = hotelRepository.findAll();
-
+        results.forEach(System.out::println);
         if (results.isEmpty()) {
             throw new EntityNotFoundException("Aucun hotel n'a ete trouve");
         }
