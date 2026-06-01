@@ -21,8 +21,6 @@ public class FlightBooking {
     @JoinColumn(name = "ib_flight_id")
     private Flight inboundFlight;
 
-    private Integer nbPax;
-
     @Column(length = 20)
     private String status;
 }

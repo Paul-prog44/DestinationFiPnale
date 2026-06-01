@@ -25,6 +25,7 @@ public class AuthService {
     private final JwtTokenProvider tokenProvider;
 
     public AuthResponse register(RegisterRequest request) {
+        // vérifie que l'email n'est pas déjà utilisé
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new EmailAlreadyUsedException(request.getEmail());
         }
@@ -35,6 +36,7 @@ public class AuthService {
                         Role.builder().name("USER").build()
                 ));
 
+        // crée l'utilisateur avec un mot de pass hashé
         User user = new User();
         user.setFirstname(request.getFirstname());
         user.setLastname(request.getLastname());
@@ -42,14 +44,18 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setDateOfBirth(request.getDateOfBirth());
         user.setCreatedAt(LocalDateTime.now());
+        // lui attribuer un role
         user.setRole(role);
 
         userRepository.save(user);
 
+        // génère un token
         String token = tokenProvider.generateToken(user.getEmail());
+        // retourne l'ensemble des infos
         return new AuthResponse(token, user.getEmail(), user.getFirstname(), role.getName());
     }
 
+    // vérifie les credentials
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
@@ -58,6 +64,7 @@ public class AuthService {
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
 
+        // génère un nouveau token pour la connexion
         String token = tokenProvider.generateToken(user.getEmail());
         String roleName = user.getRole() != null ? user.getRole().getName() : "USER";
 

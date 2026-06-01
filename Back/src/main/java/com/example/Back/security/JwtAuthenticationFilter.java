@@ -21,6 +21,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
+
+    // reçoit la requete http, valide le token et connecte l'utilisateur
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,

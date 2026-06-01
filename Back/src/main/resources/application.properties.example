@@ -11,12 +11,10 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=false
 spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.defer-datasource-initialization=true
-spring.sql.init.mode=always
 
 # JWT
 
 # peut etre généré avec la commande :
-# [Convert]::ToBase64String((1..64 | ForEach-Object { [byte](Get-Random -Max 256) }))
-jwt.secret=MaCleDeTestSuperSecuriseePourLeDeveloppementLocal12345
+[Convert]::ToBase64String((1..64 | ForEach-Object { [byte](Get-Random -Max 256) }))
+jwt.secret=secret
 jwt.expiration=86400000
