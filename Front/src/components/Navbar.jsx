@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const sections = [
-    { key: "flights", label: "Vol" },
-    { key: "hotel", label: "Hotel" },
-    { key: "car", label: "Voiture" },
+    { key: "flights", label: "Vol", path: "/flights" },
+    { key: "hotel", label: "Hotel", path:"/hotels" },
+    { key: "car", label: "Voiture", path:"/cars" },//Nom de route @kenzahatem
 ];
 
 export default function Navbar({ currentSection = "hotel" }) {

@@ -1,8 +1,8 @@
 import API from "./authApi";
 
 export const getFlights = () =>
-    API.get("/flight/arrivalCity/3").then((response) => response.data);
+    API.get("/flight/arrivalCity/3").then((response) => response.data) //TODO : Donnée en dur
 
 export const getFlight = (id) =>
-    API.get(`/hotel/${id}`).then((response) => response.data);
+    API.get(`/hotel/${id}`).then((response) => response.data)
 
