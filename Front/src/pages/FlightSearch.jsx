@@ -1,19 +1,21 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { getFlight, getFlights } from "../api/flightApi";
+import { getCities } from "../api/cityApi";
 import Navbar from "../components/Navbar";
 
 export default function FlightSearch() {
-    const [flights, setFlights] = useState([]);
+    const [flights, setFlights] = useState([])
     const [departureFilter, setDepartureFilter] = useState("");
-    const [arrivalFilter, setArrivalFilter] = useState("");
-    const [departureDate, setDepartureDate] = useState("");
+    const [arrivalFilter, setArrivalFilter] = useState([]);
+    const [departureDate, setDepartureDate] = useState([]);
     const [returnDate, setReturnDate] = useState("");
     const [passengers, setPassengers] = useState("1");
     const [sortOrder, setSortOrder] = useState("duration");
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
+    const [cities, setCities] = useState([])
     
     const selectedDeparture = searchParams.get("from") ?? "";
 
@@ -53,6 +55,20 @@ export default function FlightSearch() {
             }
         };
 
+        const cities = async () => {
+            try {
+                const data = await getCities()
+                setDepartureFilter(data)
+                setArrivalFilter(data)
+                //TODO : recupération des villes OK, affichage a faire 
+            } catch {
+                console.log("Une erreur est survenue pour getCities")
+            }
+        
+        }
+
+        
+        cities()
         loadFlights();
     }, []);
 
@@ -60,7 +76,6 @@ export default function FlightSearch() {
         setDepartureFilter(selectedDeparture);
     }, [selectedDeparture]);
 
-    const departureCities = [...new Set(flights.map((flight) => flight.departureCity))].sort((left, right) => left.localeCompare(right));
     
     const filteredFlights = useMemo(() => {
         const visibleFlights = selectedDeparture
