@@ -25,4 +25,13 @@ public class FlightController {
         return ResponseEntity.ok(flightService.findByArrivalCityId(cityId));
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<FlightSearchResponse> search(@ModelAttribute FlightSearchCriteria criteria) {
+
+        System.out.println("Critères reçus : " + criteria); 
+        
+        return ResponseEntity.ok(flightService.search(criteria));
+
+    }
+
 }
