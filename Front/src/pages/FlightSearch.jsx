@@ -58,9 +58,8 @@ export default function FlightSearch() {
         const cities = async () => {
             try {
                 const data = await getCities()
-                setDepartureFilter(data)
-                setArrivalFilter(data)
-                //TODO : recupération des villes OK, affichage a faire 
+                console.log(data)
+                setCities(data.cities)
             } catch {
                 console.log("Une erreur est survenue pour getCities")
             }
@@ -118,8 +117,17 @@ export default function FlightSearch() {
                                 <label className="form-label fw-medium">Départ de</label>
                                 <select className="form-select border-0 shadow-sm" value={departureFilter} onChange={(event) => setDepartureFilter(event.target.value)}>
                                     <option value="">Toutes les villes</option>
-                                    {departureCities.map((city) => (
-                                        <option key={city} value={city}>{city}</option>
+                                    {cities.map((city) => (
+                                        <option key={city.id} value={city}>{city.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+                            <div className="col-lg-3 col-md-6">
+                                <label className="form-label fw-medium">A destination de</label>
+                                <select className="form-select border-0 shadow-sm" value={departureFilter} onChange={(event) => setArrivalFilter(event.target.value)}>
+                                    <option value="">Toutes les villes</option>
+                                    {cities.map((city) => (
+                                        <option key={city.id} value={city}>{city.name}</option>
                                     ))}
                                 </select>
                             </div>
