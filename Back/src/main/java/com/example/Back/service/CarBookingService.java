@@ -28,13 +28,10 @@ public class CarBookingService {
         Car car = carRepository.findById(request.getCarId())
                 .orElseThrow(() -> new RuntimeException("Voiture introuvable"));
 
-        City city = cityRepository.findById(request.getCityId())
-                .orElseThrow(() -> new RuntimeException("Ville introuvable"));
 
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
 
-        // Validation des dates
         if (request.getStartDate().isBefore(LocalDate.now())) {
             throw new RuntimeException("La date de début ne peut pas être dans le passé");
         }
@@ -42,19 +39,15 @@ public class CarBookingService {
             throw new RuntimeException("La date de début doit être avant la date de fin");
         }
 
-        // Disponibilité
         if (carBookingRepository.isCarAlreadyBooked(car.getId(), request.getStartDate(), request.getEndDate())) {
             throw new RuntimeException("Cette voiture est déjà réservée sur cette période");
         }
 
-        // Calcul prix
         long numberOfDays = ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate());
         BigDecimal price = car.getPricePerDay().multiply(BigDecimal.valueOf(numberOfDays));
 
-        // 1. Crée le CarBooking
         CarBooking carBooking = CarBooking.builder()
                 .car(car)
-                .city(city)
                 .startDate(request.getStartDate())
                 .endDate(request.getEndDate())
                 .price(price)
@@ -62,7 +55,6 @@ public class CarBookingService {
                 .build();
         carBookingRepository.save(carBooking);
 
-        // 2. Crée le Booking qui relie User + CarBooking
         Booking booking = Booking.builder()
                 .user(user)
                 .carBooking(carBooking)
@@ -115,12 +107,15 @@ public class CarBookingService {
     }
 
     private CarBookingResponse toResponse(CarBooking booking, long numberOfDays) {
+        // La ville vient maintenant de car.city
+        City city = booking.getCar().getCity();
+
         return new CarBookingResponse(
                 booking.getId(),
                 booking.getCar().getBrand(),
                 booking.getCar().getModel(),
-                booking.getCity().getName(),
-                booking.getCity().getCountry(),
+                city != null ? city.getName() : null,
+                city != null ? city.getCountry() : null,
                 booking.getStartDate(),
                 booking.getEndDate(),
                 booking.getPrice(),

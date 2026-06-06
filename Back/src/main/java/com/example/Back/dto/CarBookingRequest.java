@@ -6,7 +6,6 @@ import java.time.LocalDate;
 @Data
 public class CarBookingRequest {
     private Integer carId;
-    private Integer cityId;
     private LocalDate startDate;
     private LocalDate endDate;
 }

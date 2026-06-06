@@ -4,13 +4,13 @@ import { useAuth } from "../hooks/useAuth";
 const sections = [
     { key: "vol", label: "Vol" },
     { key: "hotel", label: "Hotel" },
-    { key: "voiture", label: "Voiture" },
+    { key: "car", label: "Voiture", to: "/cars" },
 ];
 
 export default function Navbar({ currentSection = "hotel" }) {
     const { isAuthenticated, user } = useAuth();
     const accountLabel = user?.email || user?.firstname || "Mon espace";
-
+git statu
     return (
         <nav className="navbar navbar-expand-lg py-0" style={{ background: "linear-gradient(90deg, #91C7B1 0%, #9BCFBD 100%)" }}>
             <div className="container py-3">
@@ -32,10 +32,10 @@ export default function Navbar({ currentSection = "hotel" }) {
 
                         return (
                             <li className="nav-item" key={section.key}>
-                                {section.key === "hotel" ? (
+                                {section.to ? (
                                     <Link
                                         className={`nav-link px-3 px-lg-4 py-2 rounded-pill ${isActive ? "bg-white text-dark shadow-sm" : "text-white"}`}
-                                        to="/hotels"
+                                        to={section.to}
                                     >
                                         {section.label}
                                     </Link>
@@ -44,8 +44,8 @@ export default function Navbar({ currentSection = "hotel" }) {
                                         className="nav-link px-3 px-lg-4 py-2 rounded-pill text-white border border-white border-opacity-50"
                                         style={{ opacity: 0.85 }}
                                     >
-                                        {section.label}
-                                    </span>
+                        {section.label}
+                    </span>
                                 )}
                             </li>
                         );

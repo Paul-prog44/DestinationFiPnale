@@ -18,13 +18,16 @@ public class CarController {
     private final CarRepository carRepository;
     private final CityRepository cityRepository;
 
-    // Liste toutes les voitures
     @GetMapping
     public ResponseEntity<List<Car>> getAllCars() {
         return ResponseEntity.ok(carRepository.findAll());
     }
 
-    // Détail d'une voiture
+    @GetMapping("/cities")
+    public ResponseEntity<List<City>> getAllCities() {
+        return ResponseEntity.ok(cityRepository.findAll());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<Car> getCarById(@PathVariable Integer id) {
         return carRepository.findById(id)
@@ -32,9 +35,8 @@ public class CarController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Liste toutes les villes
-    @GetMapping("/cities")
-    public ResponseEntity<List<City>> getAllCities() {
-        return ResponseEntity.ok(cityRepository.findAll());
+    @GetMapping("/city/{cityId}")
+    public ResponseEntity<List<Car>> getCarsByCity(@PathVariable Integer cityId) {
+        return ResponseEntity.ok(carRepository.findByCityId(cityId));
     }
 }
