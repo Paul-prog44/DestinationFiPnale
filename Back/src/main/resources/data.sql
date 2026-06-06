@@ -70,6 +70,8 @@ INSERT INTO city (name, country) VALUES ('Rio de Janeiro', 'Brésil') ON CONFLIC
 INSERT INTO city (name, country) VALUES ('Buenos Aires', 'Argentine') ON CONFLICT (name) DO NOTHING;
 INSERT INTO city (name, country) VALUES ('Bangkok', 'Thaïlande') ON CONFLICT (name) DO NOTHING;
 INSERT INTO city (name, country) VALUES ('Singapour', 'Singapour') ON CONFLICT (name) DO NOTHING;
+INSERT INTO city (name, country) VALUES ('Alicante', 'Espagne') ON CONFLICT (name) DO NOTHING;
+
 
 
 --INSERTION DES VOLS
