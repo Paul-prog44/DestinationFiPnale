@@ -11,6 +11,10 @@ export default function FlightCard({ flight }) {
     const hours = Math.floor(durationMinutes / 60)
     const minutes = durationMinutes % 60
 
+    const cityImageSrc = flight.arrCity 
+        ? `../../images/cities/${flight.arrCity}.jpg` 
+        : "https://via.placeholder.com/250x150?text=Avion";
+
     return (
         <div className="col-12">
             <div className="card border-0 shadow-sm overflow-hidden rounded-5 h-100">
@@ -18,7 +22,7 @@ export default function FlightCard({ flight }) {
                     <div className="col-lg-3">
                         <img 
                             className="w-100 h-100" 
-                            src={flight.imgPath || "https://via.placeholder.com/250x150?text=Avion"} 
+                            src={cityImageSrc} 
                             alt={flight.companyName} 
                             style={{ minHeight: "200px", objectFit: "cover" }} 
                         />
