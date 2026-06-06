@@ -2,10 +2,12 @@ package com.example.Back.service;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.Back.dto.FlightCreationRequest;
 import com.example.Back.dto.FlightDto;
+import com.example.Back.dto.FlightSearchCriteria;
 import com.example.Back.dto.FlightSearchRequest;
 import com.example.Back.dto.FlightSearchResponse;
 import com.example.Back.model.AirlineCompany;
@@ -14,6 +16,7 @@ import com.example.Back.model.Flight;
 import com.example.Back.repository.AirlineCompanyRepository;
 import com.example.Back.repository.CityRepository;
 import com.example.Back.repository.FlightRepository;
+import com.example.Back.repository.specification.FlightSpecification;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,18 @@ public class FlightService {
     private final FlightRepository flightRepository;
     private final AirlineCompanyRepository airlineCompanyRepository;
     private final CityRepository cityRepository;
+
+    private FlightDto mapToDto(Flight flight) {
+        return FlightDto.builder()
+                .id(flight.getId())
+                .companyName(flight.getCompany() != null ? flight.getCompany().getName() : "Inconnue")
+                .deptTime(flight.getDeptTime())
+                .arrTime(flight.getArrTime())
+                .depCity(flight.getDepartureCity() != null ? flight.getDepartureCity().getName() : "Inconnue")
+                .arrCity(flight.getArrivalCity() != null ? flight.getArrivalCity().getName() : "Inconnue")
+                .price(flight.getPrice())
+                .build();
+    }
 
     public FlightSearchResponse findByArrivalCityId(Integer cityId) {
         List<Flight> results = flightRepository.findByArrivalCityId(cityId);
@@ -99,6 +114,20 @@ public class FlightService {
             .depCity(depCity.getName())
             .arrCity(arrCity.getName())
             .build();
+    }
+
+    public FlightSearchResponse search(FlightSearchCriteria criteria) {
+        Specification<Flight> spec = FlightSpecification.getFlightsByCriteria(criteria);
+        
+        // 2. Le repository cherche : s'il n'y a aucun critère, il fait un "findAll" automatique sous le capot
+        List<Flight> results = flightRepository.findAll(spec);
+
+        // 3. On mappe les entités en DTO
+        List<FlightDto> flightDtos = results.stream()
+                .map(this::mapToDto)
+                .toList();
+
+        return new FlightSearchResponse(flightDtos);
     }
     
 }

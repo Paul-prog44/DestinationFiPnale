@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useSearchParams } from "react-router-dom"
-import { getFlights } from "../api/flightApi"
+import { getFlight, searchFlights } from "../api/flightApi"
 import { getCities } from "../api/cityApi"
 import Navbar from "../components/Navbar"
 import FlightCard from "../components/FlightCard"
@@ -64,7 +64,7 @@ export default function FlightSearch() {
         })
     }, [flights, selectedDeparture, sortOrder])
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault()
         setLoading(true)
         const searchCriteria = {
