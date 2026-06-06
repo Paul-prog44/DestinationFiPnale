@@ -50,18 +50,8 @@ public class FlightService {
         }
 
         List<FlightDto> flightDtos = results.stream()
-        .map(flight -> 
-            FlightDto.builder()
-            .id(flight.getId())
-            .companyName(flight.getCompany().getName())
-            .deptTime(flight.getDeptTime()) 
-            .arrTime(flight.getArrTime())
-            .depCity(flight.getDepartureCity().getName())
-            .arrCity(flight.getArrivalCity().getName())
-            .price(flight.getPrice())
-            .build()
-        )
-        .toList();
+                .map(this::mapToDto)
+                .toList();
 
         return new FlightSearchResponse(flightDtos);
     }
@@ -74,18 +64,8 @@ public class FlightService {
         }
 
         List<FlightDto> flightDtos = results.stream()
-        .map(flight -> 
-            FlightDto.builder()
-            .id(flight.getId())
-            .companyName(flight.getCompany().getName())
-            .deptTime(flight.getDeptTime()) 
-            .arrTime(flight.getArrTime())
-            .depCity(flight.getDepartureCity().getName())
-            .arrCity(flight.getArrivalCity().getName())
-            .price(flight.getPrice())
-            .build()
-        )
-        .toList();
+                .map(this::mapToDto)
+                .toList();
 
         return new FlightSearchResponse(flightDtos);
     }
@@ -106,23 +86,14 @@ public class FlightService {
 
         Flight savedFlight = flightRepository.save(flight);
 
-        return FlightDto.builder() 
-            .id(savedFlight.getId())
-            .companyName(airlineCompany.getName())
-            .deptTime(savedFlight.getDeptTime())
-            .arrTime(savedFlight.getArrTime())
-            .depCity(depCity.getName())
-            .arrCity(arrCity.getName())
-            .build();
+       return this.mapToDto(savedFlight);
     }
 
     public FlightSearchResponse search(FlightSearchCriteria criteria) {
         Specification<Flight> spec = FlightSpecification.getFlightsByCriteria(criteria);
         
-        // 2. Le repository cherche : s'il n'y a aucun critère, il fait un "findAll" automatique sous le capot
         List<Flight> results = flightRepository.findAll(spec);
 
-        // 3. On mappe les entités en DTO
         List<FlightDto> flightDtos = results.stream()
                 .map(this::mapToDto)
                 .toList();
