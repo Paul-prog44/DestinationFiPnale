@@ -83,6 +83,7 @@ public class FlightService {
         flight.setDeptTime(request.getDeptTime());
         flight.setDepartureCity(depCity);
         flight.setArrivalCity(arrCity);
+        flight.setPrice(request.getPrice());
 
         Flight savedFlight = flightRepository.save(flight);
 

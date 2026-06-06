@@ -24,7 +24,7 @@ export default function FlightSearch() {
         const initData = async () => {
             try {
                 const [flightsData, citiesData] = await Promise.all([
-                    getFlights(),
+                    searchFlights(),
                     getCities()
                 ])
                 
@@ -76,7 +76,7 @@ export default function FlightSearch() {
         }
 
         try {
-            const data = await searchFlight(searchCriteria)
+            const data = await searchFlights(searchCriteria)
             setFlights(data.flights ?? [])
         } catch (err) {
             setError("Une erreur est survenue.")
