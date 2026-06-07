@@ -1,5 +1,7 @@
 package com.example.Back.dto;
 import lombok.Data;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 // import jakarta.validation.constraints.*
 //https://www.baeldung.com/spring-boot-bean-validation
@@ -13,4 +15,5 @@ public class FlightCreationRequest {
     private LocalDateTime arrTime;
     private Integer depCityId;
     private Integer arrCityId;
+    private BigDecimal price;
 }

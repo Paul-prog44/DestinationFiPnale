@@ -20,9 +20,10 @@ public class FlightController {
         return ResponseEntity.ok(flightService.create(request));
     }
 
-    @GetMapping("/arrivalCity/{cityId}")
-    public ResponseEntity<FlightSearchResponse> search(@PathVariable Integer cityId) {
-        return ResponseEntity.ok(flightService.findByArrivalCityId(cityId));
+
+    @GetMapping("/search")
+    public ResponseEntity<FlightSearchResponse> search(@ModelAttribute FlightSearchCriteria criteria) {
+        return ResponseEntity.ok(flightService.search(criteria));
     }
 
 }
