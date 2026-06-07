@@ -19,7 +19,7 @@ export default function RegisterPage() {
         setError("");
         try {
             const data = await register(form);
-            setAuth(data.token, { email: data.email, firstname: data.firstname });
+            setAuth(data.token, { id: data.id, email: data.email, firstname: data.firstname });
             navigate(location.state?.from || "/dashboard", { replace: true });
         } catch {
             setError("Erreur lors de l'inscription. Email peut-être déjà utilisé.");

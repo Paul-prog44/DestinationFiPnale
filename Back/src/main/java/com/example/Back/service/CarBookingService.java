@@ -82,28 +82,26 @@ public class CarBookingService {
     }
 
     public CarBookingResponse cancelBooking(Integer carBookingId, String userEmail) {
-        // Retrouve le Booking lié à ce CarBooking
-        Booking booking = bookingRepository.findByUserId(
-                        userRepository.findByEmail(userEmail)
-                                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable")).getId()
-                )
+        CarBooking carBooking = carBookingRepository.findById(carBookingId)
+                .orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+
+        // Trouve le booking lié
+        Booking booking = bookingRepository.findAll()
                 .stream()
-                .filter(b -> b.getCarBooking() != null && b.getCarBooking().getId().equals(carBookingId))
+                .filter(b -> b.getCarBooking() != null
+                        && b.getCarBooking().getId().equals(carBookingId)
+                        && b.getUser().getEmail().equals(userEmail))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Réservation introuvable ou non autorisée"));
 
-        // Annule les deux
+        carBooking.setStatus("CANCELLED");
         booking.setStatus("CANCELLED");
-        booking.getCarBooking().setStatus("CANCELLED");
 
+        carBookingRepository.save(carBooking);
         bookingRepository.save(booking);
-        carBookingRepository.save(booking.getCarBooking());
 
-        long days = ChronoUnit.DAYS.between(
-                booking.getCarBooking().getStartDate(),
-                booking.getCarBooking().getEndDate()
-        );
-        return toResponse(booking.getCarBooking(), days);
+        long days = ChronoUnit.DAYS.between(carBooking.getStartDate(), carBooking.getEndDate());
+        return toResponse(carBooking, days);
     }
 
     private CarBookingResponse toResponse(CarBooking booking, long numberOfDays) {

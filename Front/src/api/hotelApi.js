@@ -8,3 +8,7 @@ export const getHotel = (hotelId) =>
 
 export const bookRoom = (data) =>
     API.post("/booking/room", data).then((response) => response.data);
+
+// pour ajouter les reservations d'hotel dans mes reservations
+export const getMyHotelBookings = (userId) =>
+    API.get(`/api/booking/user/${userId}`).then((r) => r.data);

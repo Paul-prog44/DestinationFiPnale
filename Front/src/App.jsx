@@ -5,14 +5,13 @@ import HomePage from "./pages/HomePage";
 import HotelsPage from "./pages/HotelsPage";
 import HotelDetailsPage from "./pages/HotelDetailsPage";
 import BookingConfirmPage from "./pages/BookingConfirmPage";
-import Dashboard from "./pages/Dashboard";
+import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import FlightSearch from "./pages/FlightSearch";
 import CarsPage from "./pages/CarsPage";
 import CarDetailsPage from "./pages/CarDetailsPage";
 import CarBookingConfirmPage from "./pages/CarBookingConfirmPage";
-import MyCarBookingsPage from "./pages/MyCarBookingsPage";
 
 export default function App() {
     return (
@@ -27,7 +26,8 @@ export default function App() {
                         path="/hotels/:hotelId/rooms/:roomId/confirm"
                         element={<ProtectedRoute><BookingConfirmPage /></ProtectedRoute>}
                     />
-                    <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                    <Route path="/dashboard" element={<Navigate to="/" replace />} />
+                    <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
 
                     {/* Hotels */}
                     <Route path="/" element={<HomePage />} />
@@ -39,9 +39,6 @@ export default function App() {
 
                     {/* Cars — /bookings AVANT /:carId */}
                     <Route path="/cars" element={<CarsPage />} />
-                    <Route path="/cars/bookings" element={
-                        <ProtectedRoute><MyCarBookingsPage /></ProtectedRoute>
-                    } />
                     <Route path="/cars/:carId" element={<CarDetailsPage />} />
                     <Route path="/cars/:carId/confirm" element={
                         <ProtectedRoute><CarBookingConfirmPage /></ProtectedRoute>

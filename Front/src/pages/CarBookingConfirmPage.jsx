@@ -161,10 +161,6 @@ export default function CarBookingConfirmPage() {
                                                     </div>
                                                     <div className="col-12">
                                                         <div className="rounded-4 p-3 border bg-light">
-                                                            <p className="text-secondary mb-2">Statut</p>
-                                                            <p className="mb-0">
-                                                                Une fois confirmée, la réservation sera créée avec le statut <strong>PENDING</strong>.
-                                                            </p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -181,10 +177,21 @@ export default function CarBookingConfirmPage() {
 
                                         {success && (
                                             <div className="alert alert-success mt-4 mb-0">
-                                                Réservation confirmée ! Numéro : <strong>{success.id}</strong>
-                                                <div className="mt-2">
-                                                    <Link to="/cars/bookings" className="btn btn-sm btn-outline-success rounded-pill">
+                                                <p className="fw-semibold mb-2">
+                                                    Réservation confirmée ! Numéro : <strong>#{success.id}</strong>
+                                                </p>
+                                                <div className="d-flex gap-2 flex-wrap">
+                                                    <Link
+                                                        to="/profile"
+                                                        className="btn btn-sm btn-success rounded-pill px-3"
+                                                    >
                                                         Voir mes réservations
+                                                    </Link>
+                                                    <Link
+                                                        to="/cars"
+                                                        className="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                                                    >
+                                                        Retour aux voitures
                                                     </Link>
                                                 </div>
                                             </div>

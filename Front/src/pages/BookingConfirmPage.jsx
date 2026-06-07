@@ -158,8 +158,6 @@ export default function BookingConfirmPage() {
                                                     </div>
                                                     <div className="col-12">
                                                         <div className="rounded-4 p-3 border bg-light">
-                                                            <p className="text-secondary mb-2">Statut</p>
-                                                            <p className="mb-0">Une fois confirmee, la reservation sera creee avec le statut <strong>CONFIRMED</strong>.</p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -171,7 +169,23 @@ export default function BookingConfirmPage() {
 
                                         {success && (
                                             <div className="alert alert-success mt-4 mb-0">
-                                                Reservation confirmee. Numero de reservation : <strong>{success.id}</strong>.
+                                                <p className="fw-semibold mb-2">
+                                                    Réservation confirmée ! Numéro : <strong>#{success.id}</strong>
+                                                </p>
+                                                <div className="d-flex gap-2 flex-wrap">
+                                                    <Link
+                                                        to="/profile"
+                                                        className="btn btn-sm btn-success rounded-pill px-3"
+                                                    >
+                                                        Voir mes réservations
+                                                    </Link>
+                                                    <Link
+                                                        to="/hotels"
+                                                        className="btn btn-sm btn-outline-secondary rounded-pill px-3"
+                                                    >
+                                                        Retour aux hôtels
+                                                    </Link>
+                                                </div>
                                             </div>
                                         )}
                                     </div>
