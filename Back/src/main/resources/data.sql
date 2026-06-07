@@ -1,11 +1,12 @@
 -- Pour effacer les anciennes données au besoin
-TRUNCATE city RESTART IDENTITY CASCADE;
-TRUNCATE airline_company RESTART IDENTITY CASCADE;
-TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
-TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
-TRUNCATE TABLE flight_booking RESTART IDENTITY CASCADE;
-TRUNCATE TABLE booking RESTART IDENTITY CASCADE;
-TRUNCATE TABLE users RESTART IDENTITY CASCADE;
+-- TRUNCATE city RESTART IDENTITY CASCADE;
+-- TRUNCATE airline_company RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE flight RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE flight_booking RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE booking RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE users RESTART IDENTITY CASCADE;
+-- TRUNCATE TABLE role RESTART IDENTITY CASCADE;
 
 
 
@@ -200,7 +201,7 @@ ALTER TABLE hotel ADD CONSTRAINT uq_hotel_city_adress UNIQUE (city_id, adress);
 INSERT INTO hotel (city_id, adress, stars, img_path, add_info) VALUES
 ((SELECT id FROM city WHERE name = 'Paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.jpg', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["wifi","petit-dejeuner","reception 24h"]}'),
 ((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.jpg', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["wifi","petit-dejeuner"]}'),
-((SELECT id FROM city WHERE name = 'rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["wifi","climatisation"]}'),
+((SELECT id FROM city WHERE name = 'Rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["wifi","climatisation"]}'),
 ((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.jpg', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["wifi","terrasse","petit-dejeuner"]}')
 ON CONFLICT ON CONSTRAINT uq_hotel_city_adress DO NOTHING;
 
