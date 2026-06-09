@@ -11,6 +11,4 @@ import com.example.Back.model.FlightBooking;
 public interface BookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findByUserId(Integer userId);
 
-    Optional<Booking> findById(Integer id);
-
 }

@@ -12,6 +12,10 @@ public class Car {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    private City city;
+
     @Column(length = 20)
     private String brand;
 

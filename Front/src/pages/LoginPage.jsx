@@ -16,7 +16,7 @@ export default function LoginPage() {
         setError("");
         try {
             const data = await login({ email, password });
-            setAuth(data.token, { email: data.email, firstname: data.firstname });
+            setAuth(data.token, { id: data.id, email: data.email, firstname: data.firstname });
             navigate(location.state?.from || "/dashboard", { replace: true });
         } catch {
             setError("Email ou mot de passe incorrect");

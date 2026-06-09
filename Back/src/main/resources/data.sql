@@ -220,3 +220,53 @@ INSERT INTO room (number, price_per_night, capacity, hotel_id, statham) VALUES
 (401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.jpg"}'),
 (402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.jpg"}')
 ON CONFLICT ON CONSTRAINT uq_room_hotel_number DO NOTHING;
+
+
+INSERT INTO car (city_id, brand, model, price_per_day, img_path) VALUES
+-- Renault
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Renault', 'Clio', 35.00, '/images/cars/renault-clio.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Renault', 'Megane', 50.00, '/images/cars/renault-megane.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Renault', 'Captur', 55.00, '/images/cars/renault-captur.jpg'),
+
+-- Peugeot
+((SELECT id FROM city WHERE name = 'Paris'), 'Peugeot', '208', 38.00, '/images/cars/peugeot-208.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Peugeot', '3008', 70.00, '/images/cars/peugeot-3008.jpg'),
+
+-- BMW
+((SELECT id FROM city WHERE name = 'Rome'), 'BMW', 'Serie 3', 110.00, '/images/cars/bmw-serie3.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'BMW', 'X5', 160.00, '/images/cars/bmw-x5.jpg'),
+
+-- Mercedes
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Mercedes', 'Classe A', 95.00, '/images/cars/mercedes-classea.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Mercedes', 'GLC', 150.00, '/images/cars/mercedes-glc.jpg'),
+
+-- Tesla
+((SELECT id FROM city WHERE name = 'Rome'), 'Tesla', 'Model 3', 130.00, '/images/cars/tesla-model3.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Tesla', 'Model Y', 145.00, '/images/cars/tesla-modely.jpg'),
+
+-- Toyota
+((SELECT id FROM city WHERE name = 'Rome'), 'Toyota', 'Yaris', 40.00, '/images/cars/toyota-yaris.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Toyota', 'RAV4', 80.00, '/images/cars/toyota-rav4.jpg'),
+
+-- Volkswagen
+((SELECT id FROM city WHERE name = 'Prague'), 'Volkswagen', 'Golf', 55.00, '/images/cars/vw-golf.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Volkswagen', 'Tiguan', 85.00, '/images/cars/vw-tiguan.jpg'),
+
+-- Audi
+((SELECT id FROM city WHERE name = 'Rome'), 'Audi', 'A3', 90.00, '/images/cars/audi-a3.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Audi', 'Q5', 140.00, '/images/cars/audi-q5.jpg'),
+
+-- Ford
+((SELECT id FROM city WHERE name = 'Prague'), 'Ford', 'Fiesta', 36.00, '/images/cars/ford-fiesta.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Ford', 'Mustang', 180.00, '/images/cars/ford-mustang.jpg'),
+
+-- Fiat
+((SELECT id FROM city WHERE name = 'Rome'), 'Fiat', '500', 30.00, '/images/cars/fiat-500.jpg'),
+
+-- Jeep
+((SELECT id FROM city WHERE name = 'Prague'), 'Jeep', 'Wrangler', 170.00, '/images/cars/jeep-wrangler.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Jeep', 'Compass', 95.00, '/images/cars/jeep-compass.jpg'),
+
+-- Porsche
+((SELECT id FROM city WHERE name = 'Prague'), 'Porsche', 'Cayenne', 250.00, '/images/cars/porsche-cayenne.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Porsche', '911', 350.00, '/images/cars/porsche-911.jpg');

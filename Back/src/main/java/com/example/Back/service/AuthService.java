@@ -52,7 +52,7 @@ public class AuthService {
         // génère un token
         String token = tokenProvider.generateToken(user.getEmail());
         // retourne l'ensemble des infos
-        return new AuthResponse(token, user.getEmail(), user.getFirstname(), role.getName());
+        return new AuthResponse(user.getId(),token, user.getEmail(), user.getFirstname(), role.getName());
     }
 
     // vérifie les credentials
@@ -68,6 +68,6 @@ public class AuthService {
         String token = tokenProvider.generateToken(user.getEmail());
         String roleName = user.getRole() != null ? user.getRole().getName() : "USER";
 
-        return new AuthResponse(token, user.getEmail(), user.getFirstname(), roleName);
+        return new AuthResponse(user.getId(),token, user.getEmail(), user.getFirstname(), roleName);
     }
 }

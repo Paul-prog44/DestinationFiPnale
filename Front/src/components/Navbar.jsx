@@ -2,9 +2,9 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const sections = [
-    { key: "flights", label: "Vol", path: "/flights" },
-    { key: "hotel", label: "Hotel", path:"/hotels" },
-    { key: "car", label: "Voiture", path:"/cars" },//Nom de route @kenzahatem
+    { key: "flights", label: "Vol", to: "/flights" },
+    { key: "hotel", label: "Hotel", to: "/hotels" },
+    { key: "car", label: "Voiture", to: "/cars" },
 ];
 
 export default function Navbar({ currentSection = "hotel" }) {
@@ -29,16 +29,14 @@ export default function Navbar({ currentSection = "hotel" }) {
                 <ul className="navbar-nav flex-row mx-lg-auto my-3 my-lg-0 gap-2 gap-lg-3 order-3 order-lg-2">
                     {sections.map((section) => {
                         const isActive = section.key === currentSection;
-                        
-                        // Classes communes pour éviter les lignes à rallonge
                         const baseClass = "nav-link px-3 px-lg-4 py-2 rounded-pill";
 
                         return (
                             <li className="nav-item" key={section.key}>
-                                {section.path ? (
+                                {section.to ? (
                                     <Link
                                         className={`${baseClass} ${isActive ? "bg-white text-dark shadow-sm" : "text-white"}`}
-                                        to={section.path}
+                                        to={section.to}
                                     >
                                         {section.label}
                                     </Link>
@@ -57,7 +55,7 @@ export default function Navbar({ currentSection = "hotel" }) {
 
                 <div className="d-flex align-items-center gap-2 gap-lg-3 order-2 order-lg-3 ms-lg-auto">
                     {isAuthenticated ? (
-                        <Link className="text-decoration-none" to="/dashboard">
+                        <Link className="text-decoration-none" to="/profile">
                             <div className="d-flex align-items-center gap-2 bg-white bg-opacity-25 rounded-pill px-2 px-lg-3 py-2 shadow-sm">
                                 <span
                                     className="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-dark fw-semibold"
