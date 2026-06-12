@@ -87,7 +87,7 @@ export default function FlightSearch() {
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
-            <Navbar currentSection="flight" />
+            <Navbar currentSection="flights" />
 
             <div className="container py-4 py-lg-5">
                 <div className="card border-0 shadow-sm rounded-5 mb-5" style={{ backgroundColor: "#DEDEDE" }}>

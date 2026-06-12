@@ -24,11 +24,6 @@ public class HotelController {
         return ResponseEntity.ok(hotelService.getAll());
     }
 
-    @GetMapping("/city/{cityId}")
-    public ResponseEntity<HotelSearchResponse> searchByCityId(@PathVariable Integer cityId) {
-        return ResponseEntity.ok(hotelService.findByCityId(cityId));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<HotelDetailsResponse> get(@PathVariable Integer id) {
         return ResponseEntity.ok(hotelService.get(id));

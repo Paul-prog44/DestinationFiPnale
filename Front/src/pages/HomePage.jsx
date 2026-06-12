@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getHotels } from "../api/hotelApi";
-import { useAuth } from "../hooks/useAuth";
 import Navbar from "../components/Navbar";
 
 export default function HomePage() {
@@ -9,9 +8,8 @@ export default function HomePage() {
     const [city, setCity] = useState("");
     const [checkIn, setCheckIn] = useState("");
     const [checkOut, setCheckOut] = useState("");
-    const [travellers, setTravellers] = useState("2");
+    const [breakfastOnly, setBreakfastOnly] = useState(false);
     const [error, setError] = useState("");
-    const { isAuthenticated, user } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,47 +25,36 @@ export default function HomePage() {
     }, []);
 
     const cities = [...new Set(hotels.map((h) => h.city))].sort((a, b) => a.localeCompare(b));
-    const featuredHotels = hotels.slice(0, 3);
-    const heroImage = hotels[2]?.imgPath || "/images/hotels/871745815.jpg";
+    const visibleHotels = useMemo(() => {
+        if (!breakfastOnly) {
+            return hotels;
+        }
+
+        return hotels.filter((hotel) => hotel.services?.some((service) => service.toLowerCase().includes("petit dejeuner")));
+    }, [breakfastOnly, hotels]);
+    const featuredHotels = visibleHotels.slice(0, 3);
+    const heroImage = featuredHotels[0]?.imgPath || hotels[2]?.imgPath || "/images/hotels/871745815.jpg";
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        navigate(city ? `/hotels?city=${encodeURIComponent(city)}` : "/hotels");
+        const params = new URLSearchParams();
+
+        if (city) {
+            params.set("city", city);
+        }
+
+        if (breakfastOnly) {
+            params.set("breakfast", "true");
+        }
+
+        const query = params.toString();
+
+        navigate(query ? `/hotels?${query}` : "/hotels");
     };
 
     return (
         <div className="min-vh-100" style={{ backgroundColor: "#F7F5F0" }}>
             <Navbar currentSection="home" />
-
-            {/* Bandeau de bienvenue si connecté */}
-            {isAuthenticated && (
-                <div className="py-3" style={{ backgroundColor: "#91C7B1" }}>
-                    <div className="container d-flex align-items-center justify-content-between">
-                        <div className="d-flex align-items-center gap-3">
-                            <span
-                                className="d-inline-flex align-items-center justify-content-center rounded-circle bg-white fw-bold"
-                                style={{ width: "42px", height: "42px", color: "#8EA604" }}
-                            >
-                                {user?.firstname?.charAt(0).toUpperCase()}
-                            </span>
-                            <div>
-                                <p className="mb-0 text-white fw-semibold">
-                                    Bonjour, {user?.firstname}
-                                </p>
-                                <p className="mb-0 text-white small" style={{ opacity: 0.85 }}>
-                                    Prêt pour votre prochain voyage ?
-                                </p>
-                            </div>
-                        </div>
-                        <Link
-                            className="btn btn-sm btn-light rounded-pill px-3 fw-semibold"
-                            to="/profile"
-                        >
-                            Mon profil
-                        </Link>
-                    </div>
-                </div>
-            )}
 
             {/* Hero */}
             <section className="py-4 py-lg-5">
@@ -114,17 +101,30 @@ export default function HomePage() {
                                                             ))}
                                                         </select>
                                                     </div>
-                                                    <div className="col-lg-3 col-md-6">
+                                                    <div className="col-lg-2 col-md-6">
                                                         <label className="form-label fw-medium mb-2">Date d'arrivée</label>
                                                         <input type="date" className="form-control rounded-3 border-0 shadow-sm" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} />
                                                     </div>
-                                                    <div className="col-lg-3 col-md-6">
+                                                    <div className="col-lg-2 col-md-6">
                                                         <label className="form-label fw-medium mb-2">Date de départ</label>
                                                         <input type="date" className="form-control rounded-3 border-0 shadow-sm" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
                                                     </div>
-                                                    <div className="col-lg-1 col-md-6">
-                                                        <label className="form-label fw-medium mb-2">Pers.</label>
-                                                        <input type="number" min="1" className="form-control rounded-3 border-0 shadow-sm text-center" value={travellers} onChange={(e) => setTravellers(e.target.value)} />
+                                                    <div className="col-lg-3 col-md-6">
+                                                        <label className="form-label fw-medium mb-2">Options</label>
+                                                        <div className="bg-white border-0 shadow-sm rounded-3 d-flex align-items-center px-3" style={{ height: "38px" }}>
+                                                            <div className="form-check form-switch mb-0">
+                                                                <input
+                                                                    className="form-check-input"
+                                                                    type="checkbox"
+                                                                    role="switch"
+                                                                    id="petit-dej"
+                                                                    checked={breakfastOnly}
+                                                                    onChange={(e) => setBreakfastOnly(e.target.checked)}
+                                                                    style={{ "--bs-form-check-input-checked-bg-color": "#8EA604", "--bs-form-check-input-checked-border-color": "#8EA604" }}
+                                                                />
+                                                                <label className="form-check-label fw-medium" htmlFor="petit-dej">Petit dejeuner</label>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div className="col-lg-2 col-md-12">
                                                         <button type="submit" className="btn w-100 rounded-3 fw-semibold text-white" style={{ backgroundColor: "#8EA604" }}>
@@ -132,10 +132,6 @@ export default function HomePage() {
                                                         </button>
                                                     </div>
                                                     <div className="col-12 d-flex flex-column flex-lg-row justify-content-between align-items-start align-items-lg-center gap-3 pt-2">
-                                                        <div className="form-check mb-0">
-                                                            <input className="form-check-input" type="checkbox" id="petit-dej" />
-                                                            <label className="form-check-label" htmlFor="petit-dej">Petit déj souhaité</label>
-                                                        </div>
                                                         <div className="d-flex gap-2 flex-wrap">
                                                             <span className="badge rounded-pill text-dark px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.68)" }}>Espace vol réservé</span>
                                                             <span className="badge rounded-pill text-dark px-3 py-2" style={{ backgroundColor: "rgba(255,255,255,0.68)" }}>Espace voiture réservé</span>
@@ -159,6 +155,13 @@ export default function HomePage() {
                         <h2 className="fw-semibold mb-2" style={{ color: "#91C7B1" }}>Offres du moment</h2>
                     </div>
                     <div className="row justify-content-center g-4">
+                        {breakfastOnly && featuredHotels.length === 0 && (
+                            <div className="col-12">
+                                <div className="alert alert-light border text-center mb-0">
+                                    Aucun hotel avec petit déjeuner dans les offres affichees.
+                                </div>
+                            </div>
+                        )}
                         {featuredHotels.map((hotel) => (
                             <div className="col-sm-6 col-lg-4 col-xl-3" key={hotel.id}>
                                 <div className="card h-100 border-0 overflow-hidden rounded-5 shadow-sm bg-white">
@@ -169,7 +172,9 @@ export default function HomePage() {
                                                 <p className="fw-semibold mb-1" style={{ color: "#91C7B1" }}>{hotel.city}</p>
                                                 <h3 className="h6 fw-semibold mb-0">{hotel.title}</h3>
                                             </div>
-                                            <span className="small text-nowrap">{hotel.stars} étoiles</span>
+                                            <span className="small text-nowrap" style={{ color: "#D39B2A", letterSpacing: "1px" }}>
+                                                {"★".repeat(hotel.stars ?? 0)}{"☆".repeat(5 - (hotel.stars ?? 0))}
+                                            </span>
                                         </div>
                                         <p className="small text-secondary mb-3">{hotel.summary}</p>
                                         <Link className="btn btn-sm btn-outline-dark rounded-pill px-3" to={`/hotels/${hotel.id}`}>

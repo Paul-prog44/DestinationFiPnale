@@ -110,10 +110,10 @@ export default function CarsPage() {
                         {filteredCars.map((car) => (
                             <div className="col-12" key={car.id}>
                                 <div className="card border-0 shadow-sm overflow-hidden rounded-5 h-100">
-                                    <div className="row g-0 align-items-center">
+                                    <div className="row g-0">
                                         <div className="col-lg-3">
                                             <img
-                                                className="w-100 h-100"
+                                                className="w-100 h-100 d-block"
                                                 src={car.imgPath}
                                                 alt={`${car.brand} ${car.model}`}
                                                 style={{ minHeight: "220px", objectFit: "cover" }}
@@ -131,7 +131,7 @@ export default function CarsPage() {
                                             </div>
                                         </div>
                                         <div className="col-lg-3">
-                                            <div className="card-body p-4 p-lg-5 d-flex flex-column justify-content-center align-items-lg-end text-lg-end border-top border-lg-top-0">
+                                            <div className="card-body p-4 p-lg-5 h-100 d-flex flex-column justify-content-center align-items-lg-end text-lg-end">
                                                 <p className="text-secondary mb-1">À partir de</p>
                                                 <p className="h4 fw-semibold mb-1" style={{ color: "#8EA604" }}>
                                                     {car.pricePerDay} EUR

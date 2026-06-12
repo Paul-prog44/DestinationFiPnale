@@ -1,7 +1,10 @@
 package com.example.Back.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -30,23 +33,8 @@ public class HotelService {
 
     public HotelSearchResponse getAll() {
         List<Hotel> results = hotelRepository.findAll();
-        results.forEach(System.out::println);
         if (results.isEmpty()) {
             throw new EntityNotFoundException("Aucun hotel n'a ete trouve");
-        }
-
-        List<HotelDto> hotelDtos = results.stream()
-                .map(this::toHotelDto)
-                .toList();
-
-        return new HotelSearchResponse(hotelDtos);
-    }
-
-    public HotelSearchResponse findByCityId(Integer cityId) {
-        List<Hotel> results = hotelRepository.findByCityId(cityId);
-
-        if (results.isEmpty()) {
-            throw new EntityNotFoundException("Aucun hotel n'a ete trouve pour cette ville");
         }
 
         List<HotelDto> hotelDtos = results.stream()
@@ -83,6 +71,9 @@ public class HotelService {
 
     private HotelDto toHotelDto(Hotel hotel) {
         JsonNode addInfo = readJson(hotel.getAddInfo());
+        List<Room> rooms = roomRepository.findByHotelId(hotel.getId());
+        BigDecimal minPrice = rooms.stream().map(Room::getPricePerNight).filter(Objects::nonNull).min(Comparator.naturalOrder()).orElse(null);
+        BigDecimal maxPrice = rooms.stream().map(Room::getPricePerNight).filter(Objects::nonNull).max(Comparator.naturalOrder()).orElse(null);
 
         return HotelDto.builder()
                 .id(hotel.getId())
@@ -92,6 +83,9 @@ public class HotelService {
                 .stars(hotel.getStars())
                 .imgPath(hotel.getImgPath())
                 .summary(readText(addInfo, "summary", ""))
+                .services(readTextList(addInfo, "services"))
+                .minPrice(minPrice)
+                .maxPrice(maxPrice)
                 .build();
     }
 
@@ -103,9 +97,10 @@ public class HotelService {
                 .number(room.getNumber())
                 .pricePerNight(room.getPricePerNight())
                 .capacity(room.getCapacity())
-                .title(readText(roomInfo, "title", "Chambre " + room.getNumber()))
+                .title(readText(roomInfo, "title", ""))
                 .summary(readText(roomInfo, "summary", ""))
                 .imgPath(readText(roomInfo, "imgPath", ""))
+            .highlights(readTextList(roomInfo, "highlights"))
                 .build();
     }
 
