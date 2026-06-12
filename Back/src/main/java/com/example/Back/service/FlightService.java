@@ -2,10 +2,12 @@ package com.example.Back.service;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.example.Back.dto.FlightCreationRequest;
 import com.example.Back.dto.FlightDto;
+import com.example.Back.dto.FlightSearchCriteria;
 import com.example.Back.dto.FlightSearchRequest;
 import com.example.Back.dto.FlightSearchResponse;
 import com.example.Back.model.AirlineCompany;
@@ -14,6 +16,7 @@ import com.example.Back.model.Flight;
 import com.example.Back.repository.AirlineCompanyRepository;
 import com.example.Back.repository.CityRepository;
 import com.example.Back.repository.FlightRepository;
+import com.example.Back.repository.specification.FlightSpecification;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +30,18 @@ public class FlightService {
     private final AirlineCompanyRepository airlineCompanyRepository;
     private final CityRepository cityRepository;
 
+    private FlightDto mapToDto(Flight flight) {
+        return FlightDto.builder()
+                .id(flight.getId())
+                .companyName(flight.getCompany() != null ? flight.getCompany().getName() : "Inconnue")
+                .deptTime(flight.getDeptTime())
+                .arrTime(flight.getArrTime())
+                .depCity(flight.getDepartureCity() != null ? flight.getDepartureCity().getName() : "Inconnue")
+                .arrCity(flight.getArrivalCity() != null ? flight.getArrivalCity().getName() : "Inconnue")
+                .price(flight.getPrice())
+                .build();
+    }
+
     public FlightSearchResponse findByArrivalCityId(Integer cityId) {
         List<Flight> results = flightRepository.findByArrivalCityId(cityId);
 
@@ -35,18 +50,8 @@ public class FlightService {
         }
 
         List<FlightDto> flightDtos = results.stream()
-        .map(flight -> 
-            FlightDto.builder()
-            .id(flight.getId())
-            .companyName(flight.getCompany().getName())
-            .deptTime(flight.getDeptTime()) 
-            .arrTime(flight.getArrTime())
-            .depCity(flight.getDepartureCity().getName())
-            .arrCity(flight.getArrivalCity().getName())
-            .price(flight.getPrice())
-            .build()
-        )
-        .toList();
+                .map(this::mapToDto)
+                .toList();
 
         return new FlightSearchResponse(flightDtos);
     }
@@ -59,18 +64,8 @@ public class FlightService {
         }
 
         List<FlightDto> flightDtos = results.stream()
-        .map(flight -> 
-            FlightDto.builder()
-            .id(flight.getId())
-            .companyName(flight.getCompany().getName())
-            .deptTime(flight.getDeptTime()) 
-            .arrTime(flight.getArrTime())
-            .depCity(flight.getDepartureCity().getName())
-            .arrCity(flight.getArrivalCity().getName())
-            .price(flight.getPrice())
-            .build()
-        )
-        .toList();
+                .map(this::mapToDto)
+                .toList();
 
         return new FlightSearchResponse(flightDtos);
     }
@@ -88,17 +83,23 @@ public class FlightService {
         flight.setDeptTime(request.getDeptTime());
         flight.setDepartureCity(depCity);
         flight.setArrivalCity(arrCity);
+        flight.setPrice(request.getPrice());
 
         Flight savedFlight = flightRepository.save(flight);
 
-        return FlightDto.builder() 
-            .id(savedFlight.getId())
-            .companyName(airlineCompany.getName())
-            .deptTime(savedFlight.getDeptTime())
-            .arrTime(savedFlight.getArrTime())
-            .depCity(depCity.getName())
-            .arrCity(arrCity.getName())
-            .build();
+       return this.mapToDto(savedFlight);
+    }
+
+    public FlightSearchResponse search(FlightSearchCriteria criteria) {
+        Specification<Flight> spec = FlightSpecification.getFlightsByCriteria(criteria);
+        
+        List<Flight> results = flightRepository.findAll(spec);
+
+        List<FlightDto> flightDtos = results.stream()
+                .map(this::mapToDto)
+                .toList();
+
+        return new FlightSearchResponse(flightDtos);
     }
     
 }

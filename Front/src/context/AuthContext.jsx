@@ -1,6 +1,5 @@
-import { createContext, useState } from "react";
-
-export const AuthContext = createContext(null);
+import { useState } from "react";
+import { AuthContext } from "./auth-context";
 
 
 // composant qui fournit l'état d'authentification à tous les composants enfants

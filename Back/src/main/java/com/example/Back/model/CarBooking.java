@@ -20,9 +20,6 @@ public class CarBooking {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private City city;
 
     @Column(precision = 10, scale = 2)
     private BigDecimal price;

@@ -1,0 +1,124 @@
+package com.example.Back.service;
+
+import com.example.Back.dto.CarBookingRequest;
+import com.example.Back.dto.CarBookingResponse;
+import com.example.Back.model.*;
+import com.example.Back.repository.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CarBookingService {
+
+    private final CarBookingRepository carBookingRepository;
+    private final CarRepository carRepository;
+    private final CityRepository cityRepository;
+    private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
+
+    public CarBookingResponse createBooking(CarBookingRequest request, String userEmail) {
+
+        Car car = carRepository.findById(request.getCarId())
+                .orElseThrow(() -> new RuntimeException("Voiture introuvable"));
+
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        if (request.getStartDate().isBefore(LocalDate.now())) {
+            throw new RuntimeException("La date de début ne peut pas être dans le passé");
+        }
+        if (!request.getStartDate().isBefore(request.getEndDate())) {
+            throw new RuntimeException("La date de début doit être avant la date de fin");
+        }
+
+        if (carBookingRepository.isCarAlreadyBooked(car.getId(), request.getStartDate(), request.getEndDate())) {
+            throw new RuntimeException("Cette voiture est déjà réservée sur cette période");
+        }
+
+        long numberOfDays = ChronoUnit.DAYS.between(request.getStartDate(), request.getEndDate());
+        BigDecimal price = car.getPricePerDay().multiply(BigDecimal.valueOf(numberOfDays));
+
+        CarBooking carBooking = CarBooking.builder()
+                .car(car)
+                .startDate(request.getStartDate())
+                .endDate(request.getEndDate())
+                .price(price)
+                .status("PENDING")
+                .build();
+        carBookingRepository.save(carBooking);
+
+        Booking booking = Booking.builder()
+                .user(user)
+                .carBooking(carBooking)
+                .createdAt(LocalDateTime.now())
+                .status("PENDING")
+                .build();
+        bookingRepository.save(booking);
+
+        return toResponse(carBooking, numberOfDays);
+    }
+
+    public List<CarBookingResponse> getMyBookings(String userEmail) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+
+        return bookingRepository.findByUserId(user.getId())
+                .stream()
+                .filter(b -> b.getCarBooking() != null)
+                .map(b -> {
+                    CarBooking cb = b.getCarBooking();
+                    long days = ChronoUnit.DAYS.between(cb.getStartDate(), cb.getEndDate());
+                    return toResponse(cb, days);
+                })
+                .toList();
+    }
+
+    public CarBookingResponse cancelBooking(Integer carBookingId, String userEmail) {
+        CarBooking carBooking = carBookingRepository.findById(carBookingId)
+                .orElseThrow(() -> new RuntimeException("Réservation introuvable"));
+
+        // Trouve le booking lié
+        Booking booking = bookingRepository.findAll()
+                .stream()
+                .filter(b -> b.getCarBooking() != null
+                        && b.getCarBooking().getId().equals(carBookingId)
+                        && b.getUser().getEmail().equals(userEmail))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Réservation introuvable ou non autorisée"));
+
+        carBooking.setStatus("CANCELLED");
+        booking.setStatus("CANCELLED");
+
+        carBookingRepository.save(carBooking);
+        bookingRepository.save(booking);
+
+        long days = ChronoUnit.DAYS.between(carBooking.getStartDate(), carBooking.getEndDate());
+        return toResponse(carBooking, days);
+    }
+
+    private CarBookingResponse toResponse(CarBooking booking, long numberOfDays) {
+        // La ville vient maintenant de car.city
+        City city = booking.getCar().getCity();
+
+        return new CarBookingResponse(
+                booking.getId(),
+                booking.getCar().getBrand(),
+                booking.getCar().getModel(),
+                city != null ? city.getName() : null,
+                city != null ? city.getCountry() : null,
+                booking.getStartDate(),
+                booking.getEndDate(),
+                booking.getPrice(),
+                booking.getStatus(),
+                numberOfDays
+        );
+    }
+}

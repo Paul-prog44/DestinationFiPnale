@@ -1,11 +1,13 @@
 package com.example.Back.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.Back.dto.BookingCreationRequest;
 import com.example.Back.dto.BookingDto;
 import com.example.Back.dto.BookingSearchByUserIdResponse;
+import com.example.Back.dto.RoomBookingCreationRequest;
 import com.example.Back.service.BookingService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,14 @@ public class BookingController {
     @PostMapping
     public ResponseEntity<BookingDto> create(@RequestBody BookingCreationRequest request) {
         return ResponseEntity.ok(bookingService.create(request));
+    }
+
+    @PostMapping("/room")
+    public ResponseEntity<BookingDto> createRoomBooking(
+            @RequestBody RoomBookingCreationRequest request,
+            Authentication authentication
+    ) {
+        return ResponseEntity.ok(bookingService.createRoomBooking(request, authentication.getName()));
     }
 
 }
