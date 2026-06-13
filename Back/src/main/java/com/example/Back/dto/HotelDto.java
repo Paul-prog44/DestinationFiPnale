@@ -1,5 +1,8 @@
 package com.example.Back.dto;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +16,7 @@ public class HotelDto {
     private Integer stars;
     private String imgPath;
     private String summary;
+    private List<String> services;
+    private BigDecimal minPrice;
+    private BigDecimal maxPrice;
 }
