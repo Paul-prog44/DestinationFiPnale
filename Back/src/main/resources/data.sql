@@ -199,10 +199,10 @@ ALTER TABLE hotel DROP CONSTRAINT IF EXISTS uq_hotel_city_adress;
 ALTER TABLE hotel ADD CONSTRAINT uq_hotel_city_adress UNIQUE (city_id, adress);
 
 INSERT INTO hotel (city_id, adress, stars, img_path, add_info) VALUES
-((SELECT id FROM city WHERE name = 'Paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.jpg', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["Wi-Fi","Petit dejeuner","Reception 24h"]}'),
-((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.jpg', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["Wi-Fi","Petit dejeuner"]}'),
-((SELECT id FROM city WHERE name = 'Rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["Wi-Fi","Climatisation"]}'),
-((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.jpg', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["Wi-Fi","Terrasse","Petit dejeuner"]}')
+((SELECT id FROM city WHERE name = 'Paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.avif', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["Wi-Fi","Petit dejeuner","Reception 24h"]}'),
+((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.avif', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["Wi-Fi","Petit dejeuner"]}'),
+((SELECT id FROM city WHERE name = 'Rome'), '21 Via Navona', 4, '/images/hotels/871745815.avif', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["Wi-Fi","Climatisation"]}'),
+((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.avif', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["Wi-Fi","Terrasse","Petit dejeuner"]}')
 ON CONFLICT ON CONSTRAINT uq_hotel_city_adress DO NOTHING;
 
 
@@ -211,62 +211,62 @@ ALTER TABLE room DROP CONSTRAINT IF EXISTS uq_room_hotel_number;
 ALTER TABLE room ADD CONSTRAINT uq_room_hotel_number UNIQUE (hotel_id, number);
 
 INSERT INTO room (number, price_per_night, capacity, hotel_id, statham) VALUES
-(101, 119.00, 2, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Chambre Confort","summary":"Chambre simple et lumineuse pour deux voyageurs","imgPath":"/images/rooms/371981608.jpg","highlights":["24 m2","Lit queen","Vue cour"]}'),
-(102, 169.00, 3, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Suite Deluxe","summary":"Grande chambre avec coin salon pour petit groupe","imgPath":"/images/rooms/763476568.jpg","highlights":["38 m2","Canape lounge","Salle de bain premium"]}'),
-(201, 109.00, 2, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Classique","summary":"Chambre calme ideale pour un week-end a Prague","imgPath":"/images/rooms/763942222.jpg","highlights":["20 m2","Lit double","Vue rue calme"]}'),
-(202, 149.00, 3, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Balcon","summary":"Chambre avec plus d espace et balcon","imgPath":"/images/rooms/847574085.jpg","highlights":["30 m2","Balcon prive","Coin lecture"]}'),
-(301, 129.00, 2, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Chambre Patio","summary":"Chambre confortable proche des quartiers vivants","imgPath":"/images/rooms/371981608.jpg","highlights":["22 m2","Patio interieur","Literie king size"]}'),
-(302, 179.00, 4, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Suite Terrasse","summary":"Suite familiale pour un sejour a Rome","imgPath":"/images/rooms/847574085.jpg","highlights":["42 m2","Terrasse privee","Espace famille"]}'),
-(401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.jpg","highlights":["21 m2","Patio riad","Douche italienne"]}'),
-(402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.jpg","highlights":["34 m2","Salon separe","Vue rooftop"]}')
+(101, 119.00, 2, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Chambre Confort","summary":"Chambre simple et lumineuse pour deux voyageurs","imgPath":"/images/rooms/371981608.avif","highlights":["24 m2","Lit queen","Vue cour"]}'),
+(102, 169.00, 3, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Suite Deluxe","summary":"Grande chambre avec coin salon pour petit groupe","imgPath":"/images/rooms/763476568.avif","highlights":["38 m2","Canape lounge","Salle de bain premium"]}'),
+(201, 109.00, 2, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Classique","summary":"Chambre calme ideale pour un week-end a Prague","imgPath":"/images/rooms/763942222.avif","highlights":["20 m2","Lit double","Vue rue calme"]}'),
+(202, 149.00, 3, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Balcon","summary":"Chambre avec plus d espace et balcon","imgPath":"/images/rooms/847574085.avif","highlights":["30 m2","Balcon prive","Coin lecture"]}'),
+(301, 129.00, 2, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Chambre Patio","summary":"Chambre confortable proche des quartiers vivants","imgPath":"/images/rooms/371981608.avif","highlights":["22 m2","Patio interieur","Literie king size"]}'),
+(302, 179.00, 4, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Suite Terrasse","summary":"Suite familiale pour un sejour a Rome","imgPath":"/images/rooms/847574085.avif","highlights":["42 m2","Terrasse privee","Espace famille"]}'),
+(401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.avif","highlights":["21 m2","Patio riad","Douche italienne"]}'),
+(402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.avif","highlights":["34 m2","Salon separe","Vue rooftop"]}')
 ON CONFLICT ON CONSTRAINT uq_room_hotel_number DO NOTHING;
 
 
 INSERT INTO car (city_id, brand, model, price_per_day, img_path) VALUES
 -- Renault
-((SELECT id FROM city WHERE name = 'Marrakech'), 'Renault', 'Clio', 35.00, '/images/cars/renault-clio.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Renault', 'Megane', 50.00, '/images/cars/renault-megane.jpg'),
-((SELECT id FROM city WHERE name = 'Rome'), 'Renault', 'Captur', 55.00, '/images/cars/renault-captur.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Renault', 'Clio', 35.00, '/images/cars/renault-clio.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Renault', 'Megane', 50.00, '/images/cars/renault-megane.avif'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Renault', 'Captur', 55.00, '/images/cars/renault-captur.avif'),
 
 -- Peugeot
-((SELECT id FROM city WHERE name = 'Paris'), 'Peugeot', '208', 38.00, '/images/cars/peugeot-208.jpg'),
-((SELECT id FROM city WHERE name = 'Rome'), 'Peugeot', '3008', 70.00, '/images/cars/peugeot-3008.jpg'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Peugeot', '208', 38.00, '/images/cars/peugeot-208.avif'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Peugeot', '3008', 70.00, '/images/cars/peugeot-3008.avif'),
 
 -- BMW
-((SELECT id FROM city WHERE name = 'Rome'), 'BMW', 'Serie 3', 110.00, '/images/cars/bmw-serie3.jpg'),
-((SELECT id FROM city WHERE name = 'Marrakech'), 'BMW', 'X5', 160.00, '/images/cars/bmw-x5.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'BMW', 'Serie 3', 110.00, '/images/cars/bmw-serie3.avif'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'BMW', 'X5', 160.00, '/images/cars/bmw-x5.avif'),
 
 -- Mercedes
-((SELECT id FROM city WHERE name = 'Marrakech'), 'Mercedes', 'Classe A', 95.00, '/images/cars/mercedes-classea.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Mercedes', 'GLC', 150.00, '/images/cars/mercedes-glc.jpg'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Mercedes', 'Classe A', 95.00, '/images/cars/mercedes-classea.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Mercedes', 'GLC', 150.00, '/images/cars/mercedes-glc.avif'),
 
 -- Tesla
-((SELECT id FROM city WHERE name = 'Rome'), 'Tesla', 'Model 3', 130.00, '/images/cars/tesla-model3.jpg'),
-((SELECT id FROM city WHERE name = 'Marrakech'), 'Tesla', 'Model Y', 145.00, '/images/cars/tesla-modely.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Tesla', 'Model 3', 130.00, '/images/cars/tesla-model3.avif'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Tesla', 'Model Y', 145.00, '/images/cars/tesla-modely.avif'),
 
 -- Toyota
-((SELECT id FROM city WHERE name = 'Rome'), 'Toyota', 'Yaris', 40.00, '/images/cars/toyota-yaris.jpg'),
-((SELECT id FROM city WHERE name = 'Marrakech'), 'Toyota', 'RAV4', 80.00, '/images/cars/toyota-rav4.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Toyota', 'Yaris', 40.00, '/images/cars/toyota-yaris.avif'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Toyota', 'RAV4', 80.00, '/images/cars/toyota-rav4.avif'),
 
 -- Volkswagen
-((SELECT id FROM city WHERE name = 'Prague'), 'Volkswagen', 'Golf', 55.00, '/images/cars/vw-golf.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Volkswagen', 'Tiguan', 85.00, '/images/cars/vw-tiguan.jpg'),
+((SELECT id FROM city WHERE name = 'Prague'), 'Volkswagen', 'Golf', 55.00, '/images/cars/vw-golf.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Volkswagen', 'Tiguan', 85.00, '/images/cars/vw-tiguan.avif'),
 
 -- Audi
-((SELECT id FROM city WHERE name = 'Rome'), 'Audi', 'A3', 90.00, '/images/cars/audi-a3.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Audi', 'Q5', 140.00, '/images/cars/audi-q5.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Audi', 'A3', 90.00, '/images/cars/audi-a3.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Audi', 'Q5', 140.00, '/images/cars/audi-q5.avif'),
 
 -- Ford
-((SELECT id FROM city WHERE name = 'Prague'), 'Ford', 'Fiesta', 36.00, '/images/cars/ford-fiesta.jpg'),
-((SELECT id FROM city WHERE name = 'Marrakech'), 'Ford', 'Mustang', 180.00, '/images/cars/ford-mustang.jpg'),
+((SELECT id FROM city WHERE name = 'Prague'), 'Ford', 'Fiesta', 36.00, '/images/cars/ford-fiesta.avif'),
+((SELECT id FROM city WHERE name = 'Marrakech'), 'Ford', 'Mustang', 180.00, '/images/cars/ford-mustang.avif'),
 
 -- Fiat
-((SELECT id FROM city WHERE name = 'Rome'), 'Fiat', '500', 30.00, '/images/cars/fiat-500.jpg'),
+((SELECT id FROM city WHERE name = 'Rome'), 'Fiat', '500', 30.00, '/images/cars/fiat-500.avif'),
 
 -- Jeep
-((SELECT id FROM city WHERE name = 'Prague'), 'Jeep', 'Wrangler', 170.00, '/images/cars/jeep-wrangler.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Jeep', 'Compass', 95.00, '/images/cars/jeep-compass.jpg'),
+((SELECT id FROM city WHERE name = 'Prague'), 'Jeep', 'Wrangler', 170.00, '/images/cars/jeep-wrangler.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Jeep', 'Compass', 95.00, '/images/cars/jeep-compass.avif'),
 
 -- Porsche
-((SELECT id FROM city WHERE name = 'Prague'), 'Porsche', 'Cayenne', 250.00, '/images/cars/porsche-cayenne.jpg'),
-((SELECT id FROM city WHERE name = 'Paris'), 'Porsche', '911', 350.00, '/images/cars/porsche-911.jpg');
+((SELECT id FROM city WHERE name = 'Prague'), 'Porsche', 'Cayenne', 250.00, '/images/cars/porsche-cayenne.avif'),
+((SELECT id FROM city WHERE name = 'Paris'), 'Porsche', '911', 350.00, '/images/cars/porsche-911.avif');

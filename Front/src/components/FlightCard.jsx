@@ -12,7 +12,7 @@ export default function FlightCard({ flight }) {
     const minutes = durationMinutes % 60
 
     const cityImageSrc = flight.arrCity 
-        ? `../../images/cities/${flight.arrCity}.jpg` 
+        ? `../../images/cities/${flight.arrCity}.avif`
         : "https://via.placeholder.com/250x150?text=Avion";
 
     return (

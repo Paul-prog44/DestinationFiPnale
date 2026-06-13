@@ -33,7 +33,7 @@ export default function HomePage() {
         return hotels.filter((hotel) => hotel.services?.some((service) => service.toLowerCase().includes("petit dejeuner")));
     }, [breakfastOnly, hotels]);
     const featuredHotels = visibleHotels.slice(0, 3);
-    const heroImage = featuredHotels[0]?.imgPath || hotels[2]?.imgPath || "/images/hotels/871745815.jpg";
+    const heroImage = featuredHotels[0]?.imgPath || hotels[2]?.imgPath || "/images/hotels/871745815.avif";
 
     const handleSubmit = (e) => {
         e.preventDefault();
