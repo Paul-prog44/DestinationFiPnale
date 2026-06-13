@@ -8,7 +8,7 @@
 # - Le navigateur appelle l'API sur https://apidfip.totorow.com (VITE_API_URL).
 services:
   app:
-    image: node:24-alpine
+    image: docker.io/library/node:24-alpine
     container_name: Front-React
     working_dir: /Front
     networks:
@@ -24,7 +24,7 @@ services:
     restart: unless-stopped
 
   db:
-    image: postgres:16-alpine
+    image: docker.io/library/postgres:16-alpine
     container_name: Postgres-DB
     networks:
       - fip_network
@@ -37,7 +37,7 @@ services:
     restart: unless-stopped
 
   backend:
-    image: eclipse-temurin:21-jdk-alpine
+    image: docker.io/library/eclipse-temurin:21-jdk-alpine
     container_name: Back-Spring
     working_dir: /Back
     networks:
