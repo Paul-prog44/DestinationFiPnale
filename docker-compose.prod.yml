@@ -2,7 +2,9 @@
 # Lancement :  podman compose -f docker-compose.prod.yml up -d
 #
 # - Aucun port n'est publie sur l'hote : c'est Caddy qui expose le 80/443.
-# - Caddy joint les conteneurs par leur nom (Front-React, Back-Spring) via pro-gw.
+# - Caddy joint les conteneurs par leur nom via pro-gw :
+#     dfip.totorow.com    -> Front-React:5173
+#     apidfip.totorow.com -> Back-Spring:8093  (8080 est deja pris par qBittorrent/Gluetun)
 # - Le navigateur appelle l'API sur https://apidfip.totorow.com (VITE_API_URL).
 services:
   app:
@@ -52,6 +54,7 @@ services:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8093
       JWT_SECRET: CHANGE_MOI_par_un_secret_de_32_caracteres_minimum
       JWT_EXPIRATION: 86400000
     restart: unless-stopped
