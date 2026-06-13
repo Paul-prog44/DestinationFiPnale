@@ -1,0 +1,67 @@
+# Compose de PRODUCTION (VPS, derriere Caddy sur le reseau externe pro-gw).
+# Lancement :  podman compose -f docker-compose.prod.yml up -d
+#
+# - Aucun port n'est publie sur l'hote : c'est Caddy qui expose le 80/443.
+# - Caddy joint les conteneurs par leur nom (Front-React, Back-Spring) via pro-gw.
+# - Le navigateur appelle l'API sur https://api.dfip.totorow.com (VITE_API_URL).
+services:
+  app:
+    image: node:24-alpine
+    container_name: Front-React
+    working_dir: /Front
+    networks:
+      - pro-gw
+    volumes:
+      - ./Front:/Front
+      - front_node_modules:/Front/node_modules
+    command: sh -c "npm install && npm run dev -- --host"
+    environment:
+      - NODE_ENV=development
+      - VITE_API_URL=https://api.dfip.totorow.com
+      - VITE_PUBLIC_HOST=dfip.totorow.com
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: Postgres-DB
+    networks:
+      - fip_network
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: DestinationFIPnale
+    volumes:
+      - postgres_db_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  backend:
+    image: eclipse-temurin:21-jdk-alpine
+    container_name: Back-Spring
+    working_dir: /Back
+    networks:
+      - fip_network
+      - pro-gw
+    depends_on:
+      - db
+    volumes:
+      - ./Back:/Back
+      - ./Back/.m2:/root/.m2
+    command: sh -c "./mvnw spring-boot:run -DskipTests"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/DestinationFIPnale
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: CHANGE_MOI_par_un_secret_de_32_caracteres_minimum
+      JWT_EXPIRATION: 86400000
+    restart: unless-stopped
+
+networks:
+  fip_network:
+    driver: bridge
+  pro-gw:
+    external: true
+
+volumes:
+  postgres_db_data:
+  front_node_modules:
