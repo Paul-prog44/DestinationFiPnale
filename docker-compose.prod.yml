@@ -61,6 +61,7 @@ networks:
     driver: bridge
   pro-gw:
     external: true
+    name: pro-gw
 
 volumes:
   postgres_db_data:
