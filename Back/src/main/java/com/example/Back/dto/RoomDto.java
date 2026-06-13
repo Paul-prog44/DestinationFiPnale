@@ -1,6 +1,7 @@
 package com.example.Back.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
@@ -15,4 +16,5 @@ public class RoomDto {
     private String title;
     private String summary;
     private String imgPath;
+    private List<String> highlights;
 }

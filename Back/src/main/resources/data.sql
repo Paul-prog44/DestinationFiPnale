@@ -199,10 +199,10 @@ ALTER TABLE hotel DROP CONSTRAINT IF EXISTS uq_hotel_city_adress;
 ALTER TABLE hotel ADD CONSTRAINT uq_hotel_city_adress UNIQUE (city_id, adress);
 
 INSERT INTO hotel (city_id, adress, stars, img_path, add_info) VALUES
-((SELECT id FROM city WHERE name = 'Paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.jpg', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["wifi","petit-dejeuner","reception 24h"]}'),
-((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.jpg', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["wifi","petit-dejeuner"]}'),
-((SELECT id FROM city WHERE name = 'Rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["wifi","climatisation"]}'),
-((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.jpg', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["wifi","terrasse","petit-dejeuner"]}')
+((SELECT id FROM city WHERE name = 'Paris'), '12 rue du Louvre', 4, '/images/hotels/384566763.jpg', '{"title":"Hotel Opera Jardin","summary":"Hotel central, calme et lumineux pour un sejour a Paris","services":["Wi-Fi","Petit dejeuner","Reception 24h"]}'),
+((SELECT id FROM city WHERE name = 'Prague'), '8 Karlova', 4, '/images/hotels/763942237.jpg', '{"title":"Maison Vltava","summary":"Petit hotel de charme proche du centre historique","services":["Wi-Fi","Petit dejeuner"]}'),
+((SELECT id FROM city WHERE name = 'Rome'), '21 Via Navona', 4, '/images/hotels/871745815.jpg', '{"title":"Palazzo Navona","summary":"Adresse cosy pour visiter Rome a pied","services":["Wi-Fi","Climatisation"]}'),
+((SELECT id FROM city WHERE name = 'Marrakech'), '5 rue de la Medina', 5, '/images/hotels/763942237.jpg', '{"title":"Riad Atlas Medina","summary":"Sejour chaleureux avec terrasse dans la medina","services":["Wi-Fi","Terrasse","Petit dejeuner"]}')
 ON CONFLICT ON CONSTRAINT uq_hotel_city_adress DO NOTHING;
 
 
@@ -211,14 +211,14 @@ ALTER TABLE room DROP CONSTRAINT IF EXISTS uq_room_hotel_number;
 ALTER TABLE room ADD CONSTRAINT uq_room_hotel_number UNIQUE (hotel_id, number);
 
 INSERT INTO room (number, price_per_night, capacity, hotel_id, statham) VALUES
-(101, 119.00, 2, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Chambre Confort","summary":"Chambre simple et lumineuse pour deux voyageurs","imgPath":"/images/rooms/371981608.jpg"}'),
-(102, 169.00, 3, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Suite Deluxe","summary":"Grande chambre avec coin salon pour petit groupe","imgPath":"/images/rooms/763476568.jpg"}'),
-(201, 109.00, 2, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Classique","summary":"Chambre calme ideale pour un week-end a Prague","imgPath":"/images/rooms/763942222.jpg"}'),
-(202, 149.00, 3, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Balcon","summary":"Chambre avec plus d espace et balcon","imgPath":"/images/rooms/847574085.jpg"}'),
-(301, 129.00, 2, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Chambre Patio","summary":"Chambre confortable proche des quartiers vivants","imgPath":"/images/rooms/371981608.jpg"}'),
-(302, 179.00, 4, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Suite Terrasse","summary":"Suite familiale pour un sejour a Rome","imgPath":"/images/rooms/847574085.jpg"}'),
-(401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.jpg"}'),
-(402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.jpg"}')
+(101, 119.00, 2, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Chambre Confort","summary":"Chambre simple et lumineuse pour deux voyageurs","imgPath":"/images/rooms/371981608.jpg","highlights":["24 m2","Lit queen","Vue cour"]}'),
+(102, 169.00, 3, (SELECT id FROM hotel WHERE adress = '12 rue du Louvre'), '{"title":"Suite Deluxe","summary":"Grande chambre avec coin salon pour petit groupe","imgPath":"/images/rooms/763476568.jpg","highlights":["38 m2","Canape lounge","Salle de bain premium"]}'),
+(201, 109.00, 2, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Classique","summary":"Chambre calme ideale pour un week-end a Prague","imgPath":"/images/rooms/763942222.jpg","highlights":["20 m2","Lit double","Vue rue calme"]}'),
+(202, 149.00, 3, (SELECT id FROM hotel WHERE adress = '8 Karlova'), '{"title":"Chambre Balcon","summary":"Chambre avec plus d espace et balcon","imgPath":"/images/rooms/847574085.jpg","highlights":["30 m2","Balcon prive","Coin lecture"]}'),
+(301, 129.00, 2, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Chambre Patio","summary":"Chambre confortable proche des quartiers vivants","imgPath":"/images/rooms/371981608.jpg","highlights":["22 m2","Patio interieur","Literie king size"]}'),
+(302, 179.00, 4, (SELECT id FROM hotel WHERE adress = '21 Via Navona'), '{"title":"Suite Terrasse","summary":"Suite familiale pour un sejour a Rome","imgPath":"/images/rooms/847574085.jpg","highlights":["42 m2","Terrasse privee","Espace famille"]}'),
+(401, 99.00, 2, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Chambre Riad","summary":"Chambre calme avec ambiance riad traditionnelle","imgPath":"/images/rooms/763476568.jpg","highlights":["21 m2","Patio riad","Douche italienne"]}'),
+(402, 139.00, 3, (SELECT id FROM hotel WHERE adress = '5 rue de la Medina'), '{"title":"Suite Medina","summary":"Suite spacieuse pour profiter du sejour a Marrakech","imgPath":"/images/rooms/763942222.jpg","highlights":["34 m2","Salon separe","Vue rooftop"]}')
 ON CONFLICT ON CONSTRAINT uq_room_hotel_number DO NOTHING;
 
 

@@ -88,7 +88,7 @@ export default function BookingConfirmPage() {
                             <div>
                                 <span className="badge rounded-pill px-3 py-2 mb-3" style={{ backgroundColor: "#DEDEDE", color: "#212529" }}>Confirmation</span>
                                 <h1 className="h2 fw-semibold mb-2">Confirmation de votre reservation</h1>
-                                <p className="text-secondary mb-0">Le rendu se rapproche du tunnel de maquette, tout en gardant une seule action back: confirmer la reservation.</p>
+                                <p className="text-secondary mb-0">{hotel.city} — {hotel.adress}</p>
                             </div>
                             <Link className="btn btn-outline-dark rounded-pill px-4" to={`/hotels/${hotelId}`}>Modifier</Link>
                         </div>
@@ -99,9 +99,9 @@ export default function BookingConfirmPage() {
                                     <div className="p-4 p-lg-5 h-100">
                                         <h2 className="h4 fw-semibold mb-4">Recapitulatif</h2>
                                         <div className="d-flex align-items-center gap-3 mb-4">
-                                            <img src={room.imgPath} alt={room.title} className="rounded-4" style={{ width: "120px", height: "120px", objectFit: "cover" }} />
+                                            <img src={room.imgPath} alt={room.title} className="rounded-4 d-block" style={{ width: "120px", height: "120px", objectFit: "cover" }} />
                                             <div>
-                                                <p className="text-secondary mb-1">Hotel {hotel.title}</p>
+                                                <p className="text-secondary mb-1">{hotel.title}</p>
                                                 <h3 className="h5 fw-semibold mb-1">{room.title}</h3>
                                                 <p className="mb-0">{hotel.city}</p>
                                             </div>
@@ -121,7 +121,11 @@ export default function BookingConfirmPage() {
                                             </div>
                                             <div className="col-6">
                                                 <p className="text-secondary mb-1">Capacite</p>
-                                                <p className="mb-0 fw-medium">{room.capacity} personne(s)</p>
+                                                <p className="mb-0 fw-medium">{room.capacity}</p>
+                                            </div>
+                                            <div className="col-6">
+                                                <p className="text-secondary mb-1">Numero</p>
+                                                <p className="mb-0 fw-medium">{room.number}</p>
                                             </div>
                                         </div>
                                         <div className="pt-3 border-top">
@@ -145,7 +149,7 @@ export default function BookingConfirmPage() {
                                     <div className="p-4 p-lg-5 h-100 d-flex flex-column justify-content-between">
                                         <div>
                                             <h2 className="h4 fw-semibold mb-4">Votre reservation</h2>
-                                            <p className="text-secondary mb-4">Le paiement complet n'est pas encore branche. Cette page confirme aujourd'hui vos dates de sejour.</p>
+                                            <p className="text-secondary mb-4">Renseignez vos dates pour confirmer la reservation de cette chambre.</p>
                                             <form onSubmit={handleSubmit}>
                                                 <div className="row g-3">
                                                     <div className="col-md-6">
@@ -158,6 +162,14 @@ export default function BookingConfirmPage() {
                                                     </div>
                                                     <div className="col-12">
                                                         <div className="rounded-4 p-3 border bg-light">
+                                                            <p className="fw-semibold mb-2">Infos chambre</p>
+                                                            <div className="d-flex flex-wrap gap-2">
+                                                                {room.highlights?.map((highlight) => (
+                                                                    <span className="badge rounded-pill text-dark px-3 py-2" style={{ backgroundColor: "#F5D0C5" }} key={`${room.id}-${highlight}`}>
+                                                                        {highlight}
+                                                                    </span>
+                                                                ))}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

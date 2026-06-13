@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 const sections = [
@@ -8,8 +8,14 @@ const sections = [
 ];
 
 export default function Navbar({ currentSection = "hotel" }) {
-    const { isAuthenticated, user } = useAuth();
-    const accountLabel = user?.email || user?.firstname || "Mon espace";
+    const { isAuthenticated, user, logout } = useAuth();
+    const accountLabel = user?.firstname || "Mon espace";
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
 
     return (
         <nav className="navbar navbar-expand-lg py-0" style={{ background: "linear-gradient(90deg, #91C7B1 0%, #9BCFBD 100%)" }}>
@@ -17,10 +23,15 @@ export default function Navbar({ currentSection = "hotel" }) {
                 <div className="d-flex align-items-center gap-3 order-1">
                     <Link className="navbar-brand d-flex align-items-center gap-3 mb-0 text-decoration-none" to="/">
                         <span
-                            className="d-inline-flex align-items-center justify-content-center rounded-4 fw-bold text-white"
-                            style={{ width: "52px", height: "52px", backgroundColor: "#8EA604", letterSpacing: "0.08em" }}
+                            className="d-inline-flex align-items-center justify-content-center rounded-4 shadow-sm"
+                            style={{ width: "52px", height: "52px", backgroundColor: "#8EA604" }}
                         >
-                            DF
+                            <img
+                                src="/images/branding/destination-fipnale-logo-white.svg"
+                                alt=""
+                                aria-hidden="true"
+                                style={{ width: "34px", height: "34px", objectFit: "contain" }}
+                            />
                         </span>
                         <span className="fw-semibold text-white fs-5">Destination FIPNALE</span>
                     </Link>
@@ -55,17 +66,14 @@ export default function Navbar({ currentSection = "hotel" }) {
 
                 <div className="d-flex align-items-center gap-2 gap-lg-3 order-2 order-lg-3 ms-lg-auto">
                     {isAuthenticated ? (
-                        <Link className="text-decoration-none" to="/profile">
-                            <div className="d-flex align-items-center gap-2 bg-white bg-opacity-25 rounded-pill px-2 px-lg-3 py-2 shadow-sm">
-                                <span
-                                    className="d-inline-flex align-items-center justify-content-center rounded-circle bg-white text-dark fw-semibold"
-                                    style={{ width: "34px", height: "34px" }}
-                                >
-                                    {accountLabel.charAt(0).toUpperCase()}
-                                </span>
-                                <span className="text-white small d-none d-md-inline">{accountLabel}</span>
-                            </div>
-                        </Link>
+                        <>
+                            <Link className="btn btn-light btn-sm rounded-pill px-3 fw-semibold" to="/profile">
+                                {accountLabel}
+                            </Link>
+                            <button className="btn btn-outline-light btn-sm rounded-pill px-3" onClick={handleLogout}>
+                                Déconnexion
+                            </button>
+                        </>
                     ) : (
                         <div className="d-flex gap-2">
                             <Link className="btn btn-light btn-sm rounded-pill px-3" to="/login">Connexion</Link>
