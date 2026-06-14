@@ -58,6 +58,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/hotel/**").permitAll()
+                        .requestMatchers("/api/flight/search").permitAll()
+                        .requestMatchers("/api/city").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cars/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/api/booking/**").authenticated()
