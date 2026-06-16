@@ -12,7 +12,7 @@ L'application est hébergée ici : **https://dfip.totorow.com/**
 
 ---
 
-## 🚀 Lancer le projet en local
+## Lancer le projet en local
 
 ### Prérequis
 
@@ -64,7 +64,7 @@ docker compose down -v
 
 ---
 
-## 🔗 Accéder à l'application en local
+## Accéder à l'application en local
 
 Une fois les conteneurs démarrés :
 
@@ -102,7 +102,7 @@ Le frontend appelle l'API via la variable `VITE_API_URL` définie dans [Front/.e
 
 ---
 
-## 📁 Structure du projet
+## Structure du projet
 
 ```
 .
