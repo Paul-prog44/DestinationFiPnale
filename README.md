@@ -34,10 +34,6 @@ Cette commande lance les 3 services :
 | Backend    | `Back-Spring` | http://localhost:8093   |
 | PostgreSQL | `Postgres-DB` | `localhost:5432`        |
 
-> Le frontend installe ses dépendances et démarre automatiquement.
-> Le backend compile et démarre via Maven (`./mvnw spring-boot:run`).
-> Le premier lancement peut prendre quelques minutes.
-
 Pour reconstruire / forcer la mise à jour :
 
 ```bash
@@ -71,8 +67,6 @@ Une fois les conteneurs démarrés :
 - **Site web** : http://localhost:5173
 - **API backend** : http://localhost:8093/api
 
-Le frontend appelle l'API via la variable `VITE_API_URL` définie dans [Front/.env](Front/.env) (par défaut `http://localhost:8093`).
-
 
 ### Base de données
 
@@ -97,8 +91,6 @@ Le frontend appelle l'API via la variable `VITE_API_URL` définie dans [Front/.e
 | `user3@example.com` | Lucas Martin    | `ROLE_USER` |
 | `user4@example.com` | Sophie Bernard  | `ROLE_USER` |
 | `user5@example.com` | Thomas Dubois   | `ROLE_USER` |
-
-> Ces comptes permettent de se connecter directement via la page de connexion du site.
 
 ---
 
