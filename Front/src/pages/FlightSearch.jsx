@@ -30,6 +30,7 @@ export default function FlightSearch() {
                 
                 setFlights(flightsData.flights ?? [])
                 setCities(citiesData.cities ?? [])
+                console.log(flightsData.flights)
             } catch (err) {
                 setError("Impossible de charger les données de voyage.")
             } finally {
